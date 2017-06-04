@@ -2,53 +2,34 @@ package main
 
 import (
   "os/exec"
-  "fmt"
   "log"
-  "bufio"
-  "strings"
+  "encoding/json"
+  "fmt"
 )
 
 func main () {
-  cmd := exec.Command("wmic", "bios", "list", "full", "/format:csv")
+
+  wb := Get_win32_bios()
+
+  fmt.Printf("%+v\n", wb)
+}
+
+func Get_win32_bios() (win32_bios) {
+  cmd := exec.Command("powershell", "gwmi", "win32_bios", "|", "convertto-json")
 
   o, err := cmd.Output()
   if err != nil {
       log.Fatal(err)
   }
 
-  s := string(o)
+  j := win32_bios{}
 
-  var csv_lines []string
+  json.Unmarshal(o, &j)
 
-  scanner := bufio.NewScanner(strings.NewReader(s))
-  for scanner.Scan() {
-    csv_lines = append(csv_lines, scanner.Text())
-  }
+  return j
+}
 
-  keys := csv_lines[1]
-  values := csv_lines[2]
-
-  fmt.Println(keys + "\n")
-  fmt.Println(values)
-
-
-  // r := csv.NewReader(strings.NewReader(s))
-  // fmt.Println(r)
-
-  // for {
-  //   record, err := r.ReadAll()
-  //   if err == io.EOF {
-  //     break
-  //   }
-  //   if err != nil {
-  //     log.Fatal(err)
-  //     fmt.Println(record)
-  //   }
-
-  //   fmt.Println(record)
-  // }
-
-
-
-  // fmt.Println(s)
+type win32_bios struct {
+	PSComputerName string  `json:"PSComputerName"`
+	SerialNumber   string  `json:"SerialNumber"`
 }
