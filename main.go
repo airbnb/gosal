@@ -2,31 +2,32 @@ package main
 
 import (
   "os/exec"
-  "log"
   "encoding/json"
   "fmt"
 )
 
 func main () {
 
-  wb := Get_win32_bios()
+  wb, _ := Get_win32_bios()
 
   fmt.Printf("%+v\n", wb)
 }
 
-func Get_win32_bios() (win32_bios) {
+func Get_win32_bios() (win32_bios, error) {
   cmd := exec.Command("powershell", "gwmi", "win32_bios", "|", "convertto-json")
 
   o, err := cmd.Output()
   if err != nil {
-      log.Fatal(err)
+    return win32_bios{}, err
   }
 
-  j := win32_bios{}
+  var j win32_bios
 
-  json.Unmarshal(o, &j)
+  if err := json.Unmarshal(o, &j); err != nil{
+    return win32_bios{}, err
+  }
 
-  return j
+  return j, nil
 }
 
 type win32_bios struct {
