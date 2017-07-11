@@ -23,6 +23,6 @@ func Get_win32_bios() (win32_bios, error) {
 }
 
 type win32_bios struct {
-	PSComputerName          string   `json:"PSComputerName"`
-	SerialNumber            string   `json:"SerialNumber"`
+  	PSComputerName          string   `json:"PSComputerName"`
+  	SerialNumber            string   `json:"SerialNumber"`
 }

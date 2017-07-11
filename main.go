@@ -20,7 +20,7 @@ func main () {
   json_win32_bios, _ := json.Marshal(win32_bios)
   json.Unmarshal(json_win32_bios, &report)
 
-  json_win32_logicaldisk, _ := json.Marshal(win32_logicaldisk)
+  json_win32_logicaldisk, _ := json.Marshal(win32_logicaldisk[1])
   json.Unmarshal(json_win32_logicaldisk, &report)
 
   json_report, _ := json.Marshal(report)
