@@ -23,7 +23,7 @@ func Get_win32_os() (win32_os, error) {
 }
 
 type win32_os struct {
-  Caption                 string    `json:"Caption"`
+  Caption                 string    `json:"Caption"` //os version
   TotalVirtualMemorySize  string    `json:"TotalVirtualMemorySize"`
   TotalVisibleMemorySize  string    `json:"TotalVisibleMemorySize"`
 }
