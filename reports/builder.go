@@ -1,7 +1,7 @@
 package reports
 
 import (
-	"github.com/bdemetris/gosal/utils"
+	"github.com/salopensource/gosal/utils"
 	"github.com/satori/go.uuid"
 	"strconv"
 )

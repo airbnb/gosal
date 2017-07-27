@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/bdemetris/gosal/send"
+	"github.com/salopensource/gosal/send"
 )
 
 func main() {

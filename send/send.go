@@ -2,8 +2,8 @@ package send
 
 import (
 	"fmt"
-	"github.com/bdemetris/gosal/reports"
-	"github.com/bdemetris/gosal/utils"
+	"github.com/salopensource/gosal/reports"
+	"github.com/salopensource/gosal/utils"
 	"io"
 	"net/http"
 	"net/url"
