@@ -1,9 +1,9 @@
 package reports
 
 import (
-  "fmt"
   "github.com/satori/go.uuid"
   "github.com/bdemetris/gosal/utils"
+  "strconv"
 )
 
 // build the report object
@@ -14,23 +14,23 @@ func BuildReport() (Report){
   u1 := uuid.NewV4().String()
 
   report := Report{
-    serial:       win32_bios.SerialNumber,
-    key:          utils.LoadConfig("./config.json").Key,
-    name:         win32_bios.PSComputerName,
-    disk_size:    win32_logicaldisk[1].Size,
-    sal_version:  1,
-    run_uuid:     u1,
+    Serial:       win32_bios.SerialNumber,
+    Key:          utils.LoadConfig("./config.json").Key,
+    Name:         win32_bios.PSComputerName,
+    DiskSize:     strconv.Itoa(win32_logicaldisk[1].Size),
+    SalVersion:   strconv.Itoa(1),
+    RunUUID:      u1,
   }
-  fmt.Println(report)
+
   return report
 }
 
 // report structure
 type Report struct {
-  serial          string
-  key             string
-  name            string
-  disk_size        int64
-  sal_version      int64
-  run_uuid         string
+  Serial          string
+  Key             string
+  Name            string
+  DiskSize        string
+  SalVersion      string
+  RunUUID         string
 }

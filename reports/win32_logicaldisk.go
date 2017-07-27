@@ -24,6 +24,6 @@ func Get_win32_logicaldisk() ([]win32_logicaldisk, error) {
 
 type win32_logicaldisk struct {
 	Name       string  `json:"Name"`
-	Size       int64   `json:"Size"`
+	Size       int   `json:"Size"`
 	FreeSpace  int64   `json:"Free"`
 }

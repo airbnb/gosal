@@ -3,7 +3,6 @@ package send
 import (
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -57,32 +56,32 @@ func SendCheckin() {
 
 	// Execute a checkin, providing the data to send to the checkin endpoint
   report := reports.BuildReport()
-  fmt.Println(report)
+  fmt.Println(report.Serial)
 
 	config.Checkin(url.Values{
-		"serial":      {"reports.serial"},
-		"key":         {"reports.key"},
-		"name":        {"reports.name"},
-		"disk_size":   {"reports.disk_size"},
-		"sal_version": {"reports.sal_version"},
-    "run_uuid":    {"reports.run_uuid"},
+		"serial":      {report.Serial},
+		"key":         {report.Key},
+		"name":        {report.Name},
+		"disk_size":   {report.DiskSize},
+		"sal_version": {report.SalVersion},
+    "run_uuid":    {report.RunUUID},
 	})
 }
 
 // logRequest is just a dummy "in process" thing that pretends to be the remote server and prints out what it gets
-func logRequest(w http.ResponseWriter, r *http.Request) {
-	log.Printf("Path: %q", r.URL.Path)
-	if err := r.ParseForm(); err != nil {
-		log.Fatalf("failed to parse form: %s", err)
-	}
-
-	username, password, ok := r.BasicAuth()
-	log.Printf("User auth: %s %q (%v)", username, password, ok)
-	log.Printf("Server records:")
-	for k, v := range r.Form {
-		log.Printf(" - %q = %q", k, v)
-	}
-
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "OK")
-}
+// func logRequest(w http.ResponseWriter, r *http.Request) {
+// 	log.Printf("Path: %q", r.URL.Path)
+// 	if err := r.ParseForm(); err != nil {
+// 		log.Fatalf("failed to parse form: %s", err)
+// 	}
+//
+// 	username, password, ok := r.BasicAuth()
+// 	log.Printf("User auth: %s %q (%v)", username, password, ok)
+// 	log.Printf("Server records:")
+// 	for k, v := range r.Form {
+// 		log.Printf(" - %q = %q", k, v)
+// 	}
+//
+// 	w.WriteHeader(http.StatusOK)
+// 	fmt.Fprintf(w, "OK")
+// }
