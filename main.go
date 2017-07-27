@@ -1,11 +1,11 @@
 package main
 
 import (
-  "github.com/bdemetris/gosal/reports"
+  "github.com/bdemetris/gosal/send"
 )
 
 func main () {
 
-  reports.BuildReport()
+  send.SendCheckin()
 
 }
