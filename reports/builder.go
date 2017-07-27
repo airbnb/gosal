@@ -4,7 +4,6 @@ import (
   "fmt"
   "github.com/satori/go.uuid"
   "github.com/bdemetris/gosal/utils"
-  "reflect"
 )
 
 // build the report object
