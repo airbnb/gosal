@@ -13,7 +13,6 @@ func BuildReport () {
   win32_bios, _ := Get_win32_bios()
   win32_logicaldisk, _ := Get_win32_logicaldisk()
   u1 := uuid.NewV4().String()
-  fmt.Println(reflect.TypeOf(u1))
 
   report := Report{
     serial:       win32_bios.SerialNumber,
