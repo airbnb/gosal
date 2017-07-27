@@ -2,13 +2,13 @@ package send
 
 import (
 	"fmt"
+	"github.com/bdemetris/gosal/reports"
+	"github.com/bdemetris/gosal/utils"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
-  "github.com/bdemetris/gosal/utils"
-  "github.com/bdemetris/gosal/reports"
 )
 
 // CheckinClient is just an example of what you might collect into a "client" struct.
@@ -55,8 +55,8 @@ func SendCheckin() {
 	}
 
 	// Execute a checkin, providing the data to send to the checkin endpoint
-  report := reports.BuildReport()
-  fmt.Println(report.Serial)
+	report := reports.BuildReport()
+	fmt.Println(report.Serial)
 
 	config.Checkin(url.Values{
 		"serial":      {report.Serial},
@@ -64,7 +64,7 @@ func SendCheckin() {
 		"name":        {report.Name},
 		"disk_size":   {report.DiskSize},
 		"sal_version": {report.SalVersion},
-    "run_uuid":    {report.RunUUID},
+		"run_uuid":    {report.RunUUID},
 	})
 }
 
