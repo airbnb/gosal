@@ -4,11 +4,10 @@ import (
   "fmt"
   "github.com/satori/go.uuid"
   "github.com/bdemetris/gosal/utils"
-  "reflect"
 )
 
 // build the report object
-func BuildReport () {
+func BuildReport() (Report){
 
   win32_bios, _ := Get_win32_bios()
   win32_logicaldisk, _ := Get_win32_logicaldisk()
@@ -22,8 +21,8 @@ func BuildReport () {
     sal_version:  1,
     run_uuid:     u1,
   }
-
   fmt.Println(report)
+  return report
 }
 
 // report structure
