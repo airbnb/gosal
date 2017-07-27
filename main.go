@@ -1,11 +1,11 @@
 package main
 
 import (
-  "github.com/bdemetris/gosal/send"
+	"github.com/bdemetris/gosal/send"
 )
 
-func main () {
+func main() {
 
-  send.SendCheckin()
+	send.SendCheckin()
 
 }

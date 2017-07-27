@@ -1,9 +1,9 @@
 package utils
 
 import (
-  	"io/ioutil"
-    "log"
-    "encoding/json"
+	"encoding/json"
+	"io/ioutil"
+	"log"
 )
 
 //loader for sal configuration takes path to config as argument
@@ -25,5 +25,5 @@ func LoadConfig(path string) Configuration {
 
 type Configuration struct {
 	Key string
-  URL string
+	URL string
 }
