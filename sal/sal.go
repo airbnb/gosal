@@ -41,7 +41,7 @@ type Client struct {
 	User     string
 	Password string
 
-	baseURL *url.URL
+	ServerURL *url.URL
 }
 
 // NewClient creates a new Sal API Client using Config.
@@ -51,9 +51,9 @@ func NewClient(conf *Config) (*Client, error) {
 		return nil, fmt.Errorf("sal: parsing sal API URL: %s", err)
 	}
 	client := Client{
-		User:     "sal",
-		Password: conf.Key,
-		baseURL:  baseURL,
+		User:      "sal",
+		Password:  conf.Key,
+		ServerURL: baseURL,
 	}
 	return &client, nil
 }
@@ -61,7 +61,7 @@ func NewClient(conf *Config) (*Client, error) {
 const checkinPath = "/checkin/"
 
 func (c *Client) Checkin(values url.Values) error {
-	checkinURL := c.baseURL
+	checkinURL := c.ServerURL
 	checkinURL.Path = checkinPath
 	// Create a new POST request with the urlencoded checkin values
 	req, err := http.NewRequest("POST", checkinURL.String(), strings.NewReader(values.Encode()))
