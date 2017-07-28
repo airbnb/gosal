@@ -2,13 +2,14 @@ package send
 
 import (
 	"fmt"
-	"github.com/salopensource/gosal/reports"
-	"github.com/salopensource/gosal/utils"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
+
+	"github.com/salopensource/gosal/reports"
+	"github.com/salopensource/gosal/utils"
 )
 
 // CheckinClient is just an example of what you might collect into a "client" struct.
