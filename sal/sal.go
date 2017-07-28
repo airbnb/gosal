@@ -38,7 +38,6 @@ type Config struct {
 
 // Client is just an example of what you might collect into a "client" struct.
 type Client struct {
-	URL      string
 	User     string
 	Password string
 
@@ -52,7 +51,6 @@ func NewClient(conf *Config) (*Client, error) {
 		return nil, fmt.Errorf("sal: parsing sal API URL: %s", err)
 	}
 	client := Client{
-		URL:      conf.URL,
 		User:     "sal",
 		Password: conf.Key,
 		baseURL:  baseURL,
