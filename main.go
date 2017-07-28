@@ -1,11 +1,7 @@
 package main
 
-import (
-	"github.com/salopensource/gosal/send"
-)
+import "github.com/salopensource/gosal/sal"
 
 func main() {
-
-	send.SendCheckin()
-
+	sal.SendCheckin()
 }
