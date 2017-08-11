@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"path/filepath"
 
 	"github.com/salopensource/gosal/reports"
 )
@@ -88,7 +89,13 @@ func (c *Client) Checkin(values url.Values) error {
 }
 
 func SendCheckin() {
-	conf, err := LoadConfig("config.json")
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	s := []string{dir, "config.json"}
+	conf, err := LoadConfig(strings.Join(s, "\\"))
 	if err != nil {
 		log.Fatal(err)
 	}
