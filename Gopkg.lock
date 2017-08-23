@@ -2,12 +2,6 @@
 
 
 [[projects]]
-  branch = "master"
-  name = "github.com/salopensource/gosal"
-  packages = ["reports","sal"]
-  revision = "ec15b390d17c088fb4c7740c0ace9f9e582124f6"
-
-[[projects]]
   name = "github.com/satori/go.uuid"
   packages = ["."]
   revision = "879c5887cd475cd7864858769793b2ceb0d44feb"
@@ -16,6 +10,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "62c69ac2ebb6a9df22b76cc8613ecd7a39fd9292ad9fd7d09c796de2a218621d"
+  inputs-digest = "ba7c1d9fe07de9d2a19113a6f056f20755b323782f5030d46d14f59c9da75b6a"
   solver-name = "gps-cdcl"
   solver-version = 1

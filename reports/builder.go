@@ -3,6 +3,7 @@ package reports
 import (
 	"log"
 	"strconv"
+	"strings"
 
 	"github.com/satori/go.uuid"
 )
@@ -16,6 +17,11 @@ func BuildReport(apiKey string) Report {
 		// TODO return the error here?
 		log.Printf("reports: getting win32 disk: %s", err)
 	}
+	win32_computersystem, err := Get_win32_computersystem()
+	if err != nil {
+		// TODO return the error here?
+		log.Printf("reports: getting win32 computer system: %s", err)
+	}
 	u1 := uuid.NewV4().String()
 
 	report := Report{
@@ -25,6 +31,7 @@ func BuildReport(apiKey string) Report {
 		DiskSize:   strconv.Itoa(win32_logicaldisk[1].Size),
 		SalVersion: strconv.Itoa(1),
 		RunUUID:    u1,
+		UserName:		strings.Split(win32_computersystem.UserName, "\\")[1],
 	}
 
 	return report
@@ -38,4 +45,5 @@ type Report struct {
 	DiskSize   string
 	SalVersion string
 	RunUUID    string
+	UserName	 string
 }
