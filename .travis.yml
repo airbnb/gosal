@@ -4,4 +4,4 @@ go:
   - 1.8.x
   - master
 
-script: make test
+script: make deps && make test
