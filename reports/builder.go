@@ -31,7 +31,7 @@ func BuildReport(apiKey string) Report {
 		DiskSize:   strconv.Itoa(win32_logicaldisk[1].Size),
 		SalVersion: strconv.Itoa(1),
 		RunUUID:    u1,
-		UserName:		strings.Split(win32_computersystem.UserName, "\\")[1],
+		UserName:   strings.Split(win32_computersystem.UserName, "\\")[1],
 	}
 
 	return report
@@ -45,5 +45,5 @@ type Report struct {
 	DiskSize   string
 	SalVersion string
 	RunUUID    string
-	UserName	 string
+	UserName   string
 }

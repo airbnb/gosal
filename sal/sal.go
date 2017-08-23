@@ -10,8 +10,8 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"strings"
 	"path/filepath"
+	"strings"
 
 	"github.com/airbnb/gosal/reports"
 )
