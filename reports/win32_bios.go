@@ -5,24 +5,26 @@ import (
 	"os/exec"
 )
 
-func Get_win32_bios() (win32_bios, error) {
+// GetWin32Bios exports the win32_bios powershell class
+func GetWin32Bios() (Win32Bios, error) {
 	cmd := exec.Command("powershell", "gwmi", "win32_bios", "|", "convertto-json")
 
 	o, err := cmd.Output()
 	if err != nil {
-		return win32_bios{}, err
+		return Win32Bios{}, err
 	}
 
-	var j win32_bios
+	var j Win32Bios
 
 	if err := json.Unmarshal(o, &j); err != nil {
-		return win32_bios{}, err
+		return Win32Bios{}, err
 	}
 
 	return j, nil
 }
 
-type win32_bios struct {
+// Win32Bios data structure
+type Win32Bios struct {
 	PSComputerName string `json:"PSComputerName"`
 	SerialNumber   string `json:"SerialNumber"`
 }

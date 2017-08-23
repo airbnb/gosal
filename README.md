@@ -8,7 +8,15 @@ Gosal is intended to be a multi platform client for sal.
 
 ## Getting Started
 
-Currently gosal uses a `LoadConfig` funtion that accepts a path, and expects `json`.  For development, its fine to use a path local to the gosal binary/exe.
+Currently gosal uses a `LoadConfig` funtion that accepts a path, and expects `json`.  This needs to be at the absolute path to the Gosal.exe, it looks like this...
+
+```
+{
+  "key": "your gigantic machine group key",
+  "url": "https://urltoyourserver.com/"
+}
+
+```
 
 # Building
 
