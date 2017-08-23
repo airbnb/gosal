@@ -8,16 +8,16 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-// build the report object
+// BuildReport builds the report object
 func BuildReport(apiKey string) Report {
 
-	win32_bios, _ := Get_win32_bios()
-	win32_logicaldisk, err := Get_win32_logicaldisk()
+	win32Bios, _ := GetWin32Bios()
+	win32LogicalDisk, err := GetWin32LogicalDisk()
 	if err != nil {
 		// TODO return the error here?
 		log.Printf("reports: getting win32 disk: %s", err)
 	}
-	win32_computersystem, err := Get_win32_computersystem()
+	win32ComputerSystem, err := GetWin32ComputerSystem()
 	if err != nil {
 		// TODO return the error here?
 		log.Printf("reports: getting win32 computer system: %s", err)
@@ -25,19 +25,19 @@ func BuildReport(apiKey string) Report {
 	u1 := uuid.NewV4().String()
 
 	report := Report{
-		Serial:     win32_bios.SerialNumber,
+		Serial:     win32Bios.SerialNumber,
 		Key:        apiKey,
-		Name:       win32_bios.PSComputerName,
-		DiskSize:   strconv.Itoa(win32_logicaldisk[1].Size),
+		Name:       win32Bios.PSComputerName,
+		DiskSize:   strconv.Itoa(win32LogicalDisk[1].Size),
 		SalVersion: strconv.Itoa(1),
 		RunUUID:    u1,
-		UserName:   strings.Split(win32_computersystem.UserName, "\\")[1],
+		UserName:   strings.Split(win32ComputerSystem.UserName, "\\")[1],
 	}
 
 	return report
 }
 
-// report structure
+// Report structure
 type Report struct {
 	Serial     string
 	Key        string

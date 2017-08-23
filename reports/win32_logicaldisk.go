@@ -5,7 +5,8 @@ import (
 	"os/exec"
 )
 
-func Get_win32_logicaldisk() ([]win32_logicaldisk, error) {
+// GetWin32LogicalDisk returns an array of powershell class win32_logicaldisk
+func GetWin32LogicalDisk() ([]Win32LogicalDisk, error) {
 	cmd := exec.Command("powershell", "Get-WmiObject", "Win32_LogicalDisk", "|", "convertto-json")
 
 	o, err := cmd.Output()
@@ -13,7 +14,7 @@ func Get_win32_logicaldisk() ([]win32_logicaldisk, error) {
 		return nil, err
 	}
 
-	var j []win32_logicaldisk
+	var j []Win32LogicalDisk
 
 	if err := json.Unmarshal(o, &j); err != nil {
 		return nil, err
@@ -22,7 +23,8 @@ func Get_win32_logicaldisk() ([]win32_logicaldisk, error) {
 	return j, nil
 }
 
-type win32_logicaldisk struct {
+// Win32LogicalDisk structure
+type Win32LogicalDisk struct {
 	Name      string `json:"Name"`
 	Size      int    `json:"Size"`
 	FreeSpace int64  `json:"Free"`

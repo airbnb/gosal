@@ -37,7 +37,7 @@ type Config struct {
 	URL string
 }
 
-// Client is just an example of what you might collect into a "client" struct.
+// Client is what we need to send the POST request.
 type Client struct {
 	User     string
 	Password string
@@ -61,6 +61,7 @@ func NewClient(conf *Config) (*Client, error) {
 
 const checkinPath = "/checkin/"
 
+// Checkin is our POST request
 func (c *Client) Checkin(values url.Values) error {
 	checkinURL := c.ServerURL
 	checkinURL.Path = checkinPath
@@ -88,6 +89,7 @@ func (c *Client) Checkin(values url.Values) error {
 	return nil
 }
 
+// SendCheckin uses Checkin to send our values to Sal
 func SendCheckin() {
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {

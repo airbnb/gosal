@@ -5,23 +5,25 @@ import (
 	"os/exec"
 )
 
-func Get_win32_computersystem() (win32_computersystem, error) {
+// GetWin32ComputerSystem exports win32_ComputerSystem powershell class
+func GetWin32ComputerSystem() (Win32ComputerSystem, error) {
 	cmd := exec.Command("powershell", "gwmi", "win32_ComputerSystem", "|", "ConvertTo-Json")
 
 	o, err := cmd.Output()
 	if err != nil {
-		return win32_computersystem{}, err
+		return Win32ComputerSystem{}, err
 	}
 
-	var j win32_computersystem
+	var j Win32ComputerSystem
 
 	if err := json.Unmarshal(o, &j); err != nil {
-		return win32_computersystem{}, err
+		return Win32ComputerSystem{}, err
 	}
 
 	return j, nil
 }
 
-type win32_computersystem struct {
+// Win32ComputerSystem structure
+type Win32ComputerSystem struct {
 	UserName string `json:"UserName"`
 }
