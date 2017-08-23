@@ -7,9 +7,9 @@ deps:
 build:
 	mkdir -p build
 	go build -i -o build/gosal
-	GOOS=windows go build -i -o build/gosal.exe
+	GOOS=windows go build -o build/gosal.exe
 
 test:
 	go test -cover -race -v $(shell go list ./... | grep -v /vendor/)
 
-.PHONY: build 
+.PHONY: build
