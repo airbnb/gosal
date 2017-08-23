@@ -1,6 +1,6 @@
 package main
 
-import "github.com/salopensource/gosal/sal"
+import "github.com/airbnb/gosal/sal"
 
 func main() {
 	sal.SendCheckin()

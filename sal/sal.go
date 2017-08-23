@@ -10,10 +10,10 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"strings"
 	"path/filepath"
+	"strings"
 
-	"github.com/salopensource/gosal/reports"
+	"github.com/airbnb/gosal/reports"
 )
 
 // LoadConfig loads Config from a JSON file path.
@@ -107,7 +107,7 @@ func SendCheckin() {
 
 	// Execute a checkin, providing the data to send to the checkin endpoint
 	report := reports.BuildReport(conf.Key)
-	fmt.Println(report.Serial)
+	fmt.Println(report.UserName)
 
 	client.Checkin(url.Values{
 		"serial":      {report.Serial},
@@ -116,5 +116,6 @@ func SendCheckin() {
 		"disk_size":   {report.DiskSize},
 		"sal_version": {report.SalVersion},
 		"run_uuid":    {report.RunUUID},
+		"username":    {report.UserName},
 	})
 }
