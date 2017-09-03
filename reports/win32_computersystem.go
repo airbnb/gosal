@@ -25,5 +25,7 @@ func GetWin32ComputerSystem() (Win32ComputerSystem, error) {
 
 // Win32ComputerSystem structure
 type Win32ComputerSystem struct {
-	UserName string `json:"UserName"`
+	UserName     string `json:"UserName"`
+	Manufacturer string `json:"Manufacturer"`
+	Model        string `json:"Model"`
 }
