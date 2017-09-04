@@ -4,6 +4,7 @@ import (
 	"log"
 	"strconv"
 	"strings"
+	"fmt"
 
 	"github.com/satori/go.uuid"
 )
@@ -24,6 +25,9 @@ func BuildReport(apiKey string) Report {
 		log.Printf("reports: getting win32 computer system: %s", err)
 	}
 	u1 := uuid.NewV4().String()
+
+	base, _ := BuildBase64bz2Report()
+	fmt.Printf("%+v\n", base)
 
 	report := Report{
 		Serial:     win32Bios.SerialNumber,

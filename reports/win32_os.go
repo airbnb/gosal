@@ -2,8 +2,8 @@ package reports
 
 import (
 	"encoding/json"
-	"fmt"
 	"os/exec"
+	"log"
 )
 
 // GetWin32OS exports win32_operatingsystem powershell class
@@ -13,13 +13,11 @@ func GetWin32OS() (Win32OS, error) {
 	o, err := cmd.Output()
 
 	if err != nil {
-		fmt.Println("error here")
+		log.Printf("error here")
 		return Win32OS{}, err
 	}
 
 	var j Win32OS
-
-	fmt.Println(j)
 
 	if err := json.Unmarshal(o, &j); err != nil {
 		return Win32OS{}, err

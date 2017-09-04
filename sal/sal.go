@@ -109,7 +109,6 @@ func SendCheckin() {
 
 	// Execute a checkin, providing the data to send to the checkin endpoint
 	report := reports.BuildReport(conf.Key)
-	fmt.Println(report.UserName)
 
 	client.Checkin(url.Values{
 		"serial":      {report.Serial},

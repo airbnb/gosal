@@ -25,13 +25,13 @@ func EmulateMachineInfo() (MachineInfo, error) {
 	}
 
 	report := MachineInfo{
-				Hostname:     win32Bios.PSComputerName,
-				MachineModel: win32ComputerSystem.Model,
-				OSVersion:    win32OS.Caption,
-				SerialNumber: win32Bios.SerialNumber,
+		Hostname:     win32Bios.PSComputerName,
+		MachineModel: win32ComputerSystem.Model,
+		OSVersion:    win32OS.Caption,
+		SerialNumber: win32Bios.SerialNumber,
 	}
 
-	return &report, nil
+	return report, nil
 
 }
 

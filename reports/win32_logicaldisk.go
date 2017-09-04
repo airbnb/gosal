@@ -42,7 +42,6 @@ func GetCDrive() (Win32LogicalDisk, error) {
 			c.Name = element.Name
 			c.Size = element.Size
 			c.FreeSpace = element.FreeSpace
-			// var f := element.FreeSpace
 		}
 	}
 
