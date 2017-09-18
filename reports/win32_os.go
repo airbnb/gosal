@@ -2,8 +2,8 @@ package reports
 
 import (
 	"encoding/json"
-	"os/exec"
 	"log"
+	"os/exec"
 )
 
 // GetWin32OS exports win32_operatingsystem powershell class

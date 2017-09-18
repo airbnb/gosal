@@ -1,10 +1,10 @@
 package reports
 
 import (
+	"fmt"
 	"log"
 	"strconv"
 	"strings"
-	"fmt"
 
 	"github.com/satori/go.uuid"
 )
