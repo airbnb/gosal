@@ -19,6 +19,8 @@ func EmulateMachineInfo() (MachineInfo, error) {
 	return report, nil
 }
 
+// os_vers is what sal expects - TODO change sal's behavior?
+// https://github.com/salopensource/sal/blob/master/server/views.py#L1939
 type MachineInfo struct {
 	os_vers    string
 }

@@ -19,15 +19,22 @@ func BuildBase64bz2Report() (Base64bz2Report, error) {
 	}
 
 	report := Base64bz2Report{
-		AvailableDiskSpace: cDrive.FreeSpace,
-		MachineInfo:        machineInfo,
+		base64bz2report: 	BaseReport{
+				AvailableDiskSpace: cDrive.FreeSpace,
+				MachineInfo:        machineInfo,
+			},
 	}
 
 	return report, nil
-
 }
 
-type Base64bz2Report struct {
+type BaseReport struct {
 	AvailableDiskSpace int
 	MachineInfo        MachineInfo
+}
+
+// this appears to be what sal is expecting as a top level item
+// https://github.com/salopensource/sal/blob/master/server/views.py#L1926
+type Base64bz2Report struct {
+	base64bz2report	BaseReport
 }
