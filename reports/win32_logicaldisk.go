@@ -27,7 +27,7 @@ func GetWin32LogicalDisk() ([]Win32LogicalDisk, error) {
 type Win32LogicalDisk struct {
 	Name      string `json:"Name"`
 	Size      int    `json:"Size"`
-	FreeSpace int    `json:"Free"`
+	FreeSpace int    `json:"FreeSpace"`
 }
 
 // GetCDrive explicity looks for C Drive
