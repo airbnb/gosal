@@ -28,7 +28,7 @@ func BuildReport(apiKey string) Report {
 
 	// This is our report debug
 	base, _ := BuildBase64bz2Report()
-	fmt.Printf("%+v\n", base)
+	// fmt.Printf("%+v\n", base)
 
 	report := Report{
 		Serial:     win32Bios.SerialNumber,
@@ -38,8 +38,10 @@ func BuildReport(apiKey string) Report {
 		SalVersion: strconv.Itoa(1),
 		RunUUID:    u1,
 		UserName:   strings.Split(win32ComputerSystem.UserName, "\\")[1],
+		base64bz2report: base,
 	}
 
+	fmt.Printf("%+v\n", report)
 	return report
 }
 
@@ -52,4 +54,5 @@ type Report struct {
 	SalVersion string
 	RunUUID    string
 	UserName   string
+	base64bz2report Base64bz2Report
 }
