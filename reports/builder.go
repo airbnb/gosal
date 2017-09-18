@@ -26,6 +26,7 @@ func BuildReport(apiKey string) Report {
 	}
 	u1 := uuid.NewV4().String()
 
+	// This is our report debug
 	base, _ := BuildBase64bz2Report()
 	fmt.Printf("%+v\n", base)
 
