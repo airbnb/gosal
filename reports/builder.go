@@ -1,16 +1,12 @@
 package reports
 
 import (
+	"fmt"
 	"log"
 	"strconv"
 	"strings"
-	"fmt"
-	"bytes"
-	"encoding/base64"
 
 	"github.com/satori/go.uuid"
-	"github.com/groob/plist"
-	"github.com/dsnet/compress/bzip2"
 )
 
 // BuildReport builds the report object
@@ -30,35 +26,21 @@ func BuildReport(apiKey string) Report {
 	}
 	u1 := uuid.NewV4().String()
 
-	// This is our report debug
-	base, _ := BuildBase64bz2Report()
-
-	// fmt.Printf("%+v\n", base)
-	var buf bytes.Buffer
-
-	bzw, err := bzip2.NewWriter(&buf, &bzip2.WriterConfig{Level: bzip2.BestSpeed})
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer bzw.Close()
-
-		enc := plist.NewEncoder(bzw)
-    enc.Indent("  ")
-
-		if err := enc.Encode(base); err != nil {
-        log.Fatal(err)
-    }
-		bzw.Close()
+	encodedCompressedPlist, err := BuildBase64bz2Report()
+	if err != nil {
+		// TODO return the error here?
+		log.Printf("reports: getting plist: %s", err)
+	}
 
 	report := Report{
-		Serial:     win32Bios.SerialNumber,
-		Key:        apiKey,
-		Name:       win32Bios.PSComputerName,
-		DiskSize:   strconv.Itoa(CDrive.Size),
-		SalVersion: strconv.Itoa(1),
-		RunUUID:    u1,
-		UserName:   strings.Split(win32ComputerSystem.UserName, "\\")[1],
-		Base64bz2Report: base64.StdEncoding.EncodeToString(buf.Bytes()),
+		Serial:          win32Bios.SerialNumber,
+		Key:             apiKey,
+		Name:            win32Bios.PSComputerName,
+		DiskSize:        strconv.Itoa(CDrive.Size),
+		SalVersion:      strconv.Itoa(1),
+		RunUUID:         u1,
+		UserName:        strings.Split(win32ComputerSystem.UserName, "\\")[1],
+		Base64bz2Report: encodedCompressedPlist,
 	}
 
 	fmt.Printf("%+v\n", report)
@@ -67,12 +49,12 @@ func BuildReport(apiKey string) Report {
 
 // Report structure
 type Report struct {
-	Serial     string
-	Key        string
-	Name       string
-	DiskSize   string
-	SalVersion string
-	RunUUID    string
-	UserName   string
+	Serial          string
+	Key             string
+	Name            string
+	DiskSize        string
+	SalVersion      string
+	RunUUID         string
+	UserName        string
 	Base64bz2Report string
 }
