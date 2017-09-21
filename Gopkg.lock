@@ -2,6 +2,18 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/dsnet/compress"
+  packages = [".","bzip2","bzip2/internal/sais","internal","internal/errors","internal/prefix"]
+  revision = "c4dbed65594871659ea7347a85e1b8dcd97b9990"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/groob/plist"
+  packages = ["."]
+  revision = "cd4f0bb6166577d40876bd169683d481e8082502"
+
+[[projects]]
   name = "github.com/satori/go.uuid"
   packages = ["."]
   revision = "879c5887cd475cd7864858769793b2ceb0d44feb"
@@ -10,6 +22,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ba7c1d9fe07de9d2a19113a6f056f20755b323782f5030d46d14f59c9da75b6a"
+  inputs-digest = "af0c43ccf3bd4ecf4dcc087ab2e8ab50ab3a48a789133264f5a4ba7d6eff71fe"
   solver-name = "gps-cdcl"
   solver-version = 1

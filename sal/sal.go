@@ -82,6 +82,7 @@ func (c *Client) Checkin(values url.Values) error {
 	if err != nil {
 		return fmt.Errorf("failed to checkin: %s", err)
 	}
+
 	defer resp.Body.Close()
 
 	// Copy the body to the console in case there is any response
@@ -118,5 +119,6 @@ func SendCheckin() {
 		"sal_version": {report.SalVersion},
 		"run_uuid":    {report.RunUUID},
 		"username":    {report.UserName},
+		"base64bz2report": {report.Base64bz2Report},
 	})
 }
