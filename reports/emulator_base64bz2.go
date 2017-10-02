@@ -3,6 +3,7 @@ package reports
 import (
 	"bytes"
 	"encoding/base64"
+	"fmt"
 	"log"
 
 	"github.com/dsnet/compress/bzip2"
@@ -11,6 +12,7 @@ import (
 
 type basereport struct {
 	AvailableDiskSpace int
+	MachineInfo        MachineInfo
 }
 
 // BuildBase64bz2Report will return a compressed and encoded string of our report struct
@@ -22,9 +24,18 @@ func BuildBase64bz2Report() (string, error) {
 		log.Printf("reports: getting win32 disk: %s", err)
 	}
 
+	machineInfo, err := EmulateMachineInfo()
+	if err != nil {
+		// TODO return the error here?
+		log.Printf("reports: problem with emulating machine info: %s", err)
+	}
+
 	report := basereport{
 		AvailableDiskSpace: cDrive.FreeSpace,
+		MachineInfo:        machineInfo,
 	}
+
+	// fmt.Println(report)
 
 	encodedReport, err := report.CompressAndEncode()
 	if err != nil {
@@ -57,6 +68,8 @@ func (r *basereport) CompressAndEncode() (string, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	fmt.Println(r)
 
 	return report, nil
 }
