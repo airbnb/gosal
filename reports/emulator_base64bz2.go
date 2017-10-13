@@ -14,7 +14,7 @@ type basereport struct {
 	AvailableDiskSpace int
 	ConsoleUser        string
 	OSFamily           string
-	MachineInfo        MachineInfo
+	MachineInfo        *MachineInfo
 }
 
 // BuildBase64bz2Report will return a compressed and encoded string of our report struct

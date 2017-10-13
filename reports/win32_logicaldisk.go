@@ -3,22 +3,24 @@ package reports
 import (
 	"encoding/json"
 	"os/exec"
+
+	"github.com/pkg/errors"
 )
 
 // GetWin32LogicalDisk returns an array of powershell class win32_logicaldisk
 func GetWin32LogicalDisk() ([]Win32LogicalDisk, error) {
-	cmd := exec.Command("powershell", "Get-WmiObject", "Win32_LogicalDisk", "|", "convertto-json")
+	cmd := exec.Command("powershell", "gwmi", "Win32_LogicalDisk", "|", "ConvertTo-Json")
 
 	// cmd.Stderr = os.Stderr
 	o, err := cmd.Output()
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "exec gwmi Win32_LogicalDisk")
 	}
 
 	var j []Win32LogicalDisk
 
 	if err := json.Unmarshal(o, &j); err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "failed unmarshalling Win32LogicalDisk")
 	}
 
 	return j, nil

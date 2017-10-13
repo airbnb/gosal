@@ -1,23 +1,22 @@
 package reports
 
 import (
-	"log"
 	"strconv"
+
+	"github.com/pkg/errors"
 )
 
 // EmulateMachineInfo copies its behavior from macOS, and provides struct data to Sal
-func EmulateMachineInfo() (MachineInfo, error) {
+func EmulateMachineInfo() (*MachineInfo, error) {
 
 	win32OS, err := GetWin32OS()
 	if err != nil {
-		// TODO return the error here?
-		log.Printf("reports: getting win32 os: %s", err)
+		return nil, errors.Wrap(err, "emulatemachineinfo: failed getting os data")
 	}
 
 	hardwareInfo, err := GetHardwareInfo()
 	if err != nil {
-		// TODO return the error here?
-		log.Printf("reports: system profile failed: %s", err)
+		return nil, errors.Wrap(err, "emulatemachineinfo: failed getting hardware data")
 	}
 
 	report := MachineInfo{
@@ -25,13 +24,13 @@ func EmulateMachineInfo() (MachineInfo, error) {
 		HardwareInfo: hardwareInfo,
 	}
 
-	return report, nil
+	return &report, nil
 }
 
 // MachineInfo is required as a top level report field
 type MachineInfo struct {
 	OSVers       string
-	HardwareInfo HardwareInfo
+	HardwareInfo *HardwareInfo
 }
 
 // HardwareInfo is a subset of MachineInfo
@@ -43,24 +42,21 @@ type HardwareInfo struct {
 }
 
 // GetHardwareInfo creates the necessary structure sal expects
-func GetHardwareInfo() (HardwareInfo, error) {
+func GetHardwareInfo() (*HardwareInfo, error) {
 
 	computerSystem, err := GetWin32ComputerSystem()
 	if err != nil {
-		// TODO return the error here?
-		log.Printf("machine info: computer system information failed: %s", err)
+		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting system data")
 	}
 
 	os, err := GetWin32OS()
 	if err != nil {
-		// TODO return the error here?
-		log.Printf("machine info: os information failed: %s", err)
+		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting os data")
 	}
 
 	cpu, err := GetWin32Processor()
 	if err != nil {
-		// TODO return the error here?
-		log.Printf("machine info: getting processor information failed: %s", err)
+		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting processor data")
 	}
 
 	hwinfo := HardwareInfo{
@@ -70,5 +66,5 @@ func GetHardwareInfo() (HardwareInfo, error) {
 		PhysicalMemory:        strconv.Itoa(os.TotalVisibleMemorySize) + " KB",
 	}
 
-	return hwinfo, nil
+	return &hwinfo, nil
 }

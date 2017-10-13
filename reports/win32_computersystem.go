@@ -3,22 +3,24 @@ package reports
 import (
 	"encoding/json"
 	"os/exec"
+
+	"github.com/pkg/errors"
 )
 
 // GetWin32ComputerSystem exports win32_ComputerSystem powershell class
 func GetWin32ComputerSystem() (Win32ComputerSystem, error) {
-	cmd := exec.Command("powershell", "gwmi", "win32_ComputerSystem", "|", "ConvertTo-Json")
+	cmd := exec.Command("powershell", "gwmi", "Win32_ComputerSystem", "|", "ConvertTo-Json")
 
 	// cmd.Stderr = os.Stderr
 	o, err := cmd.Output()
 	if err != nil {
-		return Win32ComputerSystem{}, err
+		return Win32ComputerSystem{}, errors.Wrap(err, "exec gwmi Win32_ComputerSystem")
 	}
 
 	var j Win32ComputerSystem
 
 	if err := json.Unmarshal(o, &j); err != nil {
-		return Win32ComputerSystem{}, err
+		return Win32ComputerSystem{}, errors.Wrap(err, "failed unmarshalling Win32_ComputerSystem")
 	}
 
 	return j, nil
