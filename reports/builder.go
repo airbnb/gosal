@@ -23,7 +23,7 @@ func BuildReport(apiKey string) (*Report, error) {
 		return nil, errors.Wrap(err, "reports: getting plist")
 	}
 
-	report := Report{
+	report := &Report{
 		Serial:          win32Bios.SerialNumber,
 		Key:             apiKey,
 		Name:            win32Bios.PSComputerName,
@@ -34,7 +34,7 @@ func BuildReport(apiKey string) (*Report, error) {
 	}
 
 	// fmt.Printf("%+v\n", report)
-	return &report, nil
+	return report, nil
 }
 
 // Report structure
