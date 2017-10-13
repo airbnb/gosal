@@ -22,7 +22,7 @@ func TestCheckin(t *testing.T) {
 		}
 		checkAuth(t, r)
 		if have, want := r.FormValue("serial"), serial; have != want {
-			t.Error("parsing serial from form: have %s, want %s", have, want)
+			t.Errorf("parsing serial from form: have %s, want %s", have, want)
 		}
 	}
 

@@ -82,6 +82,7 @@ func (c *Client) Checkin(values url.Values) error {
 	if err != nil {
 		return fmt.Errorf("failed to checkin: %s", err)
 	}
+
 	defer resp.Body.Close()
 
 	// Copy the body to the console in case there is any response
@@ -108,16 +109,18 @@ func SendCheckin() {
 	}
 
 	// Execute a checkin, providing the data to send to the checkin endpoint
-	report := reports.BuildReport(conf.Key)
-	fmt.Println(report.UserName)
+	report, err := reports.BuildReport(conf.Key)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	client.Checkin(url.Values{
-		"serial":      {report.Serial},
-		"key":         {report.Key},
-		"name":        {report.Name},
-		"disk_size":   {report.DiskSize},
-		"sal_version": {report.SalVersion},
-		"run_uuid":    {report.RunUUID},
-		"username":    {report.UserName},
+		"serial":          {report.Serial},
+		"key":             {report.Key},
+		"name":            {report.Name},
+		"disk_size":       {report.DiskSize},
+		"sal_version":     {report.SalVersion},
+		"run_uuid":        {report.RunUUID},
+		"base64bz2report": {report.Base64bz2Report},
 	})
 }
