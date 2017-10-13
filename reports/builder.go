@@ -1,10 +1,8 @@
 package reports
 
 import (
-	"fmt"
 	"log"
 	"strconv"
-	"strings"
 
 	"github.com/satori/go.uuid"
 )
@@ -19,11 +17,6 @@ func BuildReport(apiKey string) Report {
 		log.Printf("reports: getting win32 disk: %s", err)
 	}
 
-	win32ComputerSystem, err := GetWin32ComputerSystem()
-	if err != nil {
-		// TODO return the error here?
-		log.Printf("reports: getting win32 computer system: %s", err)
-	}
 	u1 := uuid.NewV4().String()
 
 	encodedCompressedPlist, err := BuildBase64bz2Report()
@@ -39,11 +32,10 @@ func BuildReport(apiKey string) Report {
 		DiskSize:        strconv.Itoa(CDrive.Size),
 		SalVersion:      strconv.Itoa(1),
 		RunUUID:         u1,
-		UserName:        strings.Split(win32ComputerSystem.UserName, "\\")[1],
 		Base64bz2Report: encodedCompressedPlist,
 	}
 
-	fmt.Printf("%+v\n", report)
+	// fmt.Printf("%+v\n", report)
 	return report
 }
 
@@ -55,6 +47,5 @@ type Report struct {
 	DiskSize        string
 	SalVersion      string
 	RunUUID         string
-	UserName        string
 	Base64bz2Report string
 }

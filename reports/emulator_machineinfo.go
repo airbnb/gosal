@@ -1,9 +1,8 @@
 package reports
 
 import (
-	"encoding/json"
-	"fmt"
 	"log"
+	"strconv"
 )
 
 // EmulateMachineInfo copies its behavior from macOS, and provides struct data to Sal
@@ -15,53 +14,61 @@ func EmulateMachineInfo() (MachineInfo, error) {
 		log.Printf("reports: getting win32 os: %s", err)
 	}
 
-	systemProfile, err := EmulateSystemProfile()
+	hardwareInfo, err := GetHardwareInfo()
 	if err != nil {
 		// TODO return the error here?
 		log.Printf("reports: system profile failed: %s", err)
 	}
 
-	fmt.Println(systemProfile)
-
 	report := MachineInfo{
-		OSVers:        win32OS.Caption,
-		SystemProfile: systemProfile,
+		OSVers:       win32OS.Caption,
+		HardwareInfo: hardwareInfo,
 	}
 
 	return report, nil
 }
 
-// MachineInfo is a plist item that sal expects to parse relative data
+// MachineInfo is required as a top level report field
 type MachineInfo struct {
-	OSVers        string
-	SystemProfile SystemProfile
+	OSVers       string
+	HardwareInfo HardwareInfo
 }
 
-type SystemProfile []struct {
-	DataType string `json:"_dataType"`
-	Items    *Items `json:"_items"`
+// HardwareInfo is a subset of MachineInfo
+type HardwareInfo struct {
+	MachineModel          string
+	CPUType               string
+	CurrentProcessorSpeed int
+	PhysicalMemory        string
 }
 
-type Items []struct {
-	MachineModel          string `json:"machine_model"`
-	CPUType               string `json:"cpu_type"`
-	CurrentProcessorSpeed string `json:"current_processor_speed"`
-	PhysicalMemory        string `json:"physical_memory"`
-}
+// GetHardwareInfo creates the necessary structure sal expects
+func GetHardwareInfo() (HardwareInfo, error) {
 
-// EmulateSystemProfile creates the necessary system_profile
-func EmulateSystemProfile() (SystemProfile, error) {
-
-	values := `[{"_dataType": "SPHardwareDataType","_items": [{"machine_model": "hi","cpu_type": "hello","current_processor_speed": "hi","physical_memory": "hello"}]}]`
-
-	var i SystemProfile
-
-	if err := json.Unmarshal([]byte(values), &i); err != nil {
-		log.Printf("reports: unmarshaling system profile: %s", err)
+	computerSystem, err := GetWin32ComputerSystem()
+	if err != nil {
+		// TODO return the error here?
+		log.Printf("machine info: computer system information failed: %s", err)
 	}
 
-	fmt.Printf("%+v", i)
+	os, err := GetWin32OS()
+	if err != nil {
+		// TODO return the error here?
+		log.Printf("machine info: os information failed: %s", err)
+	}
 
-	return i, nil
+	cpu, err := GetWin32Processor()
+	if err != nil {
+		// TODO return the error here?
+		log.Printf("machine info: getting processor information failed: %s", err)
+	}
 
+	hwinfo := HardwareInfo{
+		MachineModel:          computerSystem.Model,
+		CPUType:               cpu.CPUType,
+		CurrentProcessorSpeed: cpu.CurrentProcessorSpeed,
+		PhysicalMemory:        strconv.Itoa(os.TotalVisibleMemorySize) + " KB",
+	}
+
+	return hwinfo, nil
 }

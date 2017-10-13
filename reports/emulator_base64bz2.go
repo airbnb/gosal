@@ -3,8 +3,8 @@ package reports
 import (
 	"bytes"
 	"encoding/base64"
-	"fmt"
 	"log"
+	"strings"
 
 	"github.com/dsnet/compress/bzip2"
 	"github.com/groob/plist"
@@ -12,6 +12,8 @@ import (
 
 type basereport struct {
 	AvailableDiskSpace int
+	ConsoleUser        string
+	OSFamily           string
 	MachineInfo        MachineInfo
 }
 
@@ -30,9 +32,17 @@ func BuildBase64bz2Report() (string, error) {
 		log.Printf("reports: problem with emulating machine info: %s", err)
 	}
 
+	computerSystem, err := GetWin32ComputerSystem()
+	if err != nil {
+		// TODO return the error here?
+		log.Printf("machine info: computer system information failed: %s", err)
+	}
+
 	report := basereport{
 		AvailableDiskSpace: cDrive.FreeSpace,
 		MachineInfo:        machineInfo,
+		ConsoleUser:        strings.Split(computerSystem.UserName, "\\")[1],
+		OSFamily:           "Windows",
 	}
 
 	// fmt.Println(report)
@@ -68,8 +78,6 @@ func (r *basereport) CompressAndEncode() (string, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println(r)
 
 	return report, nil
 }

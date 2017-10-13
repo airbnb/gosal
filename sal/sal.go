@@ -112,13 +112,12 @@ func SendCheckin() {
 	report := reports.BuildReport(conf.Key)
 
 	client.Checkin(url.Values{
-		"serial":      {report.Serial},
-		"key":         {report.Key},
-		"name":        {report.Name},
-		"disk_size":   {report.DiskSize},
-		"sal_version": {report.SalVersion},
-		"run_uuid":    {report.RunUUID},
-		"username":    {report.UserName},
+		"serial":          {report.Serial},
+		"key":             {report.Key},
+		"name":            {report.Name},
+		"disk_size":       {report.DiskSize},
+		"sal_version":     {report.SalVersion},
+		"run_uuid":        {report.RunUUID},
 		"base64bz2report": {report.Base64bz2Report},
 	})
 }
