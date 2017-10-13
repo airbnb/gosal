@@ -9,6 +9,7 @@ import (
 func GetWin32Bios() (Win32Bios, error) {
 	cmd := exec.Command("powershell", "gwmi", "win32_bios", "|", "convertto-json")
 
+	// cmd.Stderr = os.Stderr
 	o, err := cmd.Output()
 	if err != nil {
 		return Win32Bios{}, err

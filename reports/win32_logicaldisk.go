@@ -9,6 +9,7 @@ import (
 func GetWin32LogicalDisk() ([]Win32LogicalDisk, error) {
 	cmd := exec.Command("powershell", "Get-WmiObject", "Win32_LogicalDisk", "|", "convertto-json")
 
+	// cmd.Stderr = os.Stderr
 	o, err := cmd.Output()
 	if err != nil {
 		return nil, err

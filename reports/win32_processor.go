@@ -9,6 +9,7 @@ import (
 func GetWin32Processor() (Win32Processor, error) {
 	cmd := exec.Command("powershell", "gwmi", "win32_processor", "|", "convertto-json")
 
+	// cmd.Stderr = os.Stderr
 	o, err := cmd.Output()
 	if err != nil {
 		return Win32Processor{}, err

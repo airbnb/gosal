@@ -9,6 +9,7 @@ import (
 func GetWin32ComputerSystem() (Win32ComputerSystem, error) {
 	cmd := exec.Command("powershell", "gwmi", "win32_ComputerSystem", "|", "ConvertTo-Json")
 
+	// cmd.Stderr = os.Stderr
 	o, err := cmd.Output()
 	if err != nil {
 		return Win32ComputerSystem{}, err

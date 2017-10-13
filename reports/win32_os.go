@@ -10,6 +10,7 @@ import (
 func GetWin32OS() (Win32OS, error) {
 	cmd := exec.Command("powershell", "gwmi", "Win32_OperatingSystem", "|", "convertto-json")
 
+	// cmd.Stderr = os.Stderr
 	o, err := cmd.Output()
 
 	if err != nil {
