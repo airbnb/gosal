@@ -1,7 +1,9 @@
 package main
 
-import "github.com/airbnb/gosal/sal"
+import (
+	"github.com/airbnb/gosal/cmd"
+)
 
 func main() {
-	sal.SendCheckin()
+	cmd.Execute()
 }
