@@ -20,7 +20,18 @@
 #  name = "github.com/x/y"
 #  version = "2.4.0"
 
+[[constraint]]
+  name = "github.com/dsnet/compress"
+  revision = "cc9eb1d7ad760af14e8f918698f745e80377af4f"
+
+[[constraint]]
+  name = "github.com/pkg/errors"
+  version = "v0.8.0"
 
 [[constraint]]
   name = "github.com/satori/go.uuid"
   version = "1.1.0"
+
+[[constraint]]
+  name = "github.com/spf13/cobra"
+  version = "v0.0.1"

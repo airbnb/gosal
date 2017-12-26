@@ -2,16 +2,28 @@
 
 
 [[projects]]
-  branch = "master"
   name = "github.com/dsnet/compress"
-  packages = [".","bzip2","bzip2/internal/sais","internal","internal/errors","internal/prefix"]
-  revision = "c4dbed65594871659ea7347a85e1b8dcd97b9990"
+  packages = [
+    ".",
+    "bzip2",
+    "bzip2/internal/sais",
+    "internal",
+    "internal/errors",
+    "internal/prefix"
+  ]
+  revision = "cc9eb1d7ad760af14e8f918698f745e80377af4f"
 
 [[projects]]
   branch = "master"
   name = "github.com/groob/plist"
   packages = ["."]
-  revision = "cd4f0bb6166577d40876bd169683d481e8082502"
+  revision = "2805b357fb2349d3a53ad2d5a5d00d191d9a37c9"
+
+[[projects]]
+  name = "github.com/inconshreveable/mousetrap"
+  packages = ["."]
+  revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
+  version = "v1.0"
 
 [[projects]]
   name = "github.com/pkg/errors"
@@ -25,9 +37,21 @@
   revision = "879c5887cd475cd7864858769793b2ceb0d44feb"
   version = "v1.1.0"
 
+[[projects]]
+  name = "github.com/spf13/cobra"
+  packages = ["."]
+  revision = "7b2c5ac9fc04fc5efafb60700713d4fa609b777b"
+  version = "v0.0.1"
+
+[[projects]]
+  name = "github.com/spf13/pflag"
+  packages = ["."]
+  revision = "e57e3eeb33f795204c1ca35f56c44f83227c6e66"
+  version = "v1.0.0"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "be2f9acc25b076885da5719081a22de2c73ac97314420ecd87196c0c5ac4f7b3"
+  inputs-digest = "8ac54c0aa6f0df92b04730e8a77398ad07fdad12b6273ea3dbcc61de0a59915a"
   solver-name = "gps-cdcl"
   solver-version = 1

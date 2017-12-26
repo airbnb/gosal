@@ -97,8 +97,8 @@ func SendCheckin() {
 		log.Fatal(err)
 	}
 
-	s := []string{dir, "config.json"}
-	conf, err := LoadConfig(strings.Join(s, "\\"))
+	s := filepath.Join(dir, "config.json")
+	conf, err := LoadConfig(s)
 	if err != nil {
 		log.Fatal(err)
 	}
