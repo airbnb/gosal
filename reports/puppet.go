@@ -2,7 +2,6 @@ package reports
 
 import (
 	"encoding/json"
-	"fmt"
 	"os/exec"
 
 	"github.com/pkg/errors"
@@ -28,8 +27,6 @@ func GetPuppetFacts() (PuppetFacts, error) {
 	}
 
 	pf = Flatten(pf)
-
-	fmt.Println(pf)
 
 	return pf, nil
 }
