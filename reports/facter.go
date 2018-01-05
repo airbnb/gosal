@@ -26,7 +26,9 @@ func GetPuppetFacts() (PuppetFacts, error) {
 		return PuppetFacts{}, errors.Wrap(err, "failed unmarshalling Puppet Facts")
 	}
 
-	pf = Flatten(pf)
+	v := pf["values"].(map[string]interface{})
+
+	pf = Flatten(v)
 
 	return pf, nil
 }
