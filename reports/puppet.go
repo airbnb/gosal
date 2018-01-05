@@ -7,17 +7,17 @@ import (
 	"github.com/pkg/errors"
 )
 
-// PuppetFacts are puppet facts duh
+// PuppetFacts stores output of puppet facts command
 type PuppetFacts map[string]interface{}
 
-// GetPuppetFacts will get puppet facts duh
+// GetPuppetFacts will exec into the PuppetFacts interface
 func GetPuppetFacts() (PuppetFacts, error) {
 	cmd := exec.Command("puppet", "facts")
 
 	// cmd.Stderr = os.Stderr
 	o, err := cmd.Output()
 	if err != nil {
-		return PuppetFacts{}, errors.Wrap(err, "exect puppet facts")
+		return PuppetFacts{}, errors.Wrap(err, "exec puppet facts")
 	}
 
 	var pf PuppetFacts
