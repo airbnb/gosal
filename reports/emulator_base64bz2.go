@@ -15,10 +15,17 @@ type basereport struct {
 	ConsoleUser        string
 	OSFamily           string
 	MachineInfo        *MachineInfo
+	Facter             PuppetFacts
 }
 
 // BuildBase64bz2Report will return a compressed and encoded string of our report struct
 func BuildBase64bz2Report() (string, error) {
+
+	puppetFacts, err := GetPuppetFacts()
+	if err != nil {
+		// TODO return the error here?
+		log.Printf("reports: getting puppet facts: %s", err)
+	}
 
 	cDrive, err := GetCDrive()
 	if err != nil {
@@ -43,6 +50,7 @@ func BuildBase64bz2Report() (string, error) {
 		MachineInfo:        machineInfo,
 		ConsoleUser:        strings.Split(computerSystem.UserName, "\\")[1],
 		OSFamily:           "Windows",
+		Facter:             puppetFacts,
 	}
 
 	// fmt.Println(report)
