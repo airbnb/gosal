@@ -3,11 +3,17 @@ package reports
 import (
 	"bytes"
 	"encoding/base64"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"log"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/dsnet/compress/bzip2"
 	"github.com/groob/plist"
+	"github.com/pkg/errors"
 )
 
 type basereport struct {
@@ -21,10 +27,32 @@ type basereport struct {
 // BuildBase64bz2Report will return a compressed and encoded string of our report struct
 func BuildBase64bz2Report() (string, error) {
 
-	puppetFacts, err := GetPuppetFacts()
+	// gets the absolute path to the config file
+	// TODO clean this up, loadconfig should do this work
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
-		// TODO return the error here?
-		log.Printf("reports: getting puppet facts: %s", err)
+		log.Fatal(err)
+	}
+
+	s := filepath.Join(dir, "config.json")
+	conf, err := loadConfig(s)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// switch for whats "facts" we would send sal
+	var facts map[string]interface{}
+	switch conf.Management.Tool {
+	case "puppet":
+		facts, err = GetPuppetFacts()
+		fmt.Println("got here")
+		if err != nil {
+			errors.Wrap(err, "puppet switch: failed to get facts")
+		}
+	case "chef":
+		fmt.Println("although perfectly normal, we dont support chef yet")
+	case "salt":
+		fmt.Println("people who run salt on the client are strange")
 	}
 
 	cDrive, err := GetCDrive()
@@ -45,12 +73,14 @@ func BuildBase64bz2Report() (string, error) {
 		log.Printf("machine info: computer system information failed: %s", err)
 	}
 
+	// TODO report struct need to switch based on config management tool
+	// Facter would change to w/e Sal supported as an input
 	report := basereport{
 		AvailableDiskSpace: cDrive.FreeSpace,
 		MachineInfo:        machineInfo,
 		ConsoleUser:        strings.Split(computerSystem.UserName, "\\")[1],
 		OSFamily:           "Windows",
-		Facter:             puppetFacts,
+		Facter:             facts,
 	}
 
 	// fmt.Println(report)
@@ -88,4 +118,30 @@ func (r *basereport) CompressAndEncode() (string, error) {
 	}
 
 	return report, nil
+}
+
+func loadConfig(path string) (*Config, error) {
+	file, err := ioutil.ReadFile(path)
+	if err != nil {
+		return nil, errors.Wrap(err, "bz2: failed to load config file")
+	}
+
+	var conf Config
+	if err = json.Unmarshal(file, &conf); err != nil {
+		return nil, errors.Wrap(err, "bz2: failed to unmarshal config")
+	}
+
+	return &conf, nil
+}
+
+// Config will extract the configuration management tool to use.
+type Config struct {
+	Management *Management
+}
+
+// Management is the nested config
+type Management struct {
+	Tool    string
+	Path    string
+	Command string
 }
