@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -31,13 +30,13 @@ func BuildBase64bz2Report() (string, error) {
 	// TODO clean this up, loadconfig should do this work
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
-		log.Fatal(err)
+		return "", errors.Wrap(err, "bz2: could not determine absolute path to config file")
 	}
 
 	s := filepath.Join(dir, "config.json")
 	conf, err := loadConfig(s)
 	if err != nil {
-		log.Fatal(err)
+		return "", errors.Wrap(err, "bz2: failed to load config file")
 	}
 
 	// switch for whats "facts" we would send sal
@@ -45,9 +44,8 @@ func BuildBase64bz2Report() (string, error) {
 	switch conf.Management.Tool {
 	case "puppet":
 		facts, err = GetPuppetFacts()
-		fmt.Println("got here")
 		if err != nil {
-			errors.Wrap(err, "puppet switch: failed to get facts")
+			return "", errors.Wrap(err, "puppet switch: failed to get facts")
 		}
 	case "chef":
 		fmt.Println("although perfectly normal, we dont support chef yet")
@@ -57,23 +55,20 @@ func BuildBase64bz2Report() (string, error) {
 
 	cDrive, err := GetCDrive()
 	if err != nil {
-		// TODO return the error here?
-		log.Printf("reports: getting win32 disk: %s", err)
+		return "", errors.Wrap(err, "bz2: failed getting c: drive")
 	}
 
 	machineInfo, err := EmulateMachineInfo()
 	if err != nil {
-		// TODO return the error here?
-		log.Printf("reports: problem with emulating machine info: %s", err)
+		return "", errors.Wrap(err, "bz2: failed getting machine info")
 	}
 
 	computerSystem, err := GetWin32ComputerSystem()
 	if err != nil {
-		// TODO return the error here?
-		log.Printf("machine info: computer system information failed: %s", err)
+		return "", errors.Wrap(err, "bz2: failed getting computer system")
 	}
 
-	// TODO report struct need to switch based on config management tool
+	// TODO report struct needs to switch based on config management tool
 	// Facter would change to w/e Sal supported as an input
 	report := basereport{
 		AvailableDiskSpace: cDrive.FreeSpace,
@@ -83,12 +78,9 @@ func BuildBase64bz2Report() (string, error) {
 		Facter:             facts,
 	}
 
-	// fmt.Println(report)
-
 	encodedReport, err := report.CompressAndEncode()
 	if err != nil {
-		// TODO return the error here?
-		log.Printf("compress and encode failed: %s", err)
+		return "", errors.Wrap(err, "bz2: failed to compress and encode report")
 	}
 
 	return encodedReport, nil
@@ -100,7 +92,7 @@ func (r *basereport) CompressAndEncode() (string, error) {
 
 	bzw, err := bzip2.NewWriter(&buf, &bzip2.WriterConfig{Level: bzip2.BestSpeed})
 	if err != nil {
-		log.Fatal(err)
+		return "", errors.Wrap(err, "bz2: failed to bzip2")
 	}
 	defer bzw.Close()
 
@@ -108,13 +100,13 @@ func (r *basereport) CompressAndEncode() (string, error) {
 	enc.Indent("  ")
 
 	if err = enc.Encode(r); err != nil {
-		log.Fatal(err)
+		return "", errors.Wrap(err, "bz2: failed to encode plist")
 	}
 	bzw.Close()
 
 	report := base64.StdEncoding.EncodeToString(buf.Bytes())
 	if err != nil {
-		log.Fatal(err)
+		return "", errors.Wrap(err, "bz2: failed to base64 encode the report string")
 	}
 
 	return report, nil
