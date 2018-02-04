@@ -13,7 +13,12 @@ Currently gosal uses a `LoadConfig` function that accepts a path to a to json fi
 ```json
 {
   "key": "your gigantic machine group key",
-  "url": "https://urltoyourserver.com/"
+  "url": "https://urltoyourserver.com/",
+  "management": {
+  "tool": "puppet",
+  "path": "C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet.bat",
+  "command": "facts"
+  }
 }
 
 ```
