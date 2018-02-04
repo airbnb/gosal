@@ -34,7 +34,7 @@ func BuildBase64bz2Report() (string, error) {
 	}
 
 	s := filepath.Join(dir, "config.json")
-	conf, err := loadConfig(s)
+	conf, err := LoadConfig(s)
 	if err != nil {
 		return "", errors.Wrap(err, "bz2: failed to load config file")
 	}
@@ -112,7 +112,7 @@ func (r *basereport) CompressAndEncode() (string, error) {
 	return report, nil
 }
 
-func loadConfig(path string) (*Config, error) {
+func LoadConfig(path string) (*Config, error) {
 	file, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, errors.Wrap(err, "bz2: failed to load config file")

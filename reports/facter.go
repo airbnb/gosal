@@ -2,7 +2,9 @@ package reports
 
 import (
 	"encoding/json"
+	"os"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/pkg/errors"
 )
@@ -12,7 +14,20 @@ type PuppetFacts map[string]interface{}
 
 // GetPuppetFacts will exec into the PuppetFacts interface
 func GetPuppetFacts() (PuppetFacts, error) {
-	cmd := exec.Command("puppet", "facts")
+	// gets the absolute path to the config file
+	// TODO clean this up, loadconfig should do this work
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		return PuppetFacts{}, errors.Wrap(err, "facter: could not determine absolute path to config file")
+	}
+
+	s := filepath.Join(dir, "config.json")
+	conf, err := LoadConfig(s)
+	if err != nil {
+		return PuppetFacts{}, errors.Wrap(err, "facter: failed to load config file")
+	}
+
+	cmd := exec.Command(conf.Management.Path, conf.Management.Command)
 
 	// cmd.Stderr = os.Stderr
 	o, err := cmd.Output()
@@ -28,18 +43,18 @@ func GetPuppetFacts() (PuppetFacts, error) {
 
 	v := pf["values"].(map[string]interface{})
 
-	pf = Flatten(v)
+	pf = FlattenMapStringInterface(v)
 
 	return pf, nil
 }
 
-// Flatten takes a map[string]interface and flattens it
-func Flatten(m map[string]interface{}) map[string]interface{} {
+// FlattenMapStringInterface takes a map[string]interface and returns a flattened map[string]interface{}
+func FlattenMapStringInterface(m map[string]interface{}) map[string]interface{} {
 	o := make(map[string]interface{})
 	for k, v := range m {
 		switch child := v.(type) {
 		case map[string]interface{}:
-			nm := Flatten(child)
+			nm := FlattenMapStringInterface(child)
 			for nk, nv := range nm {
 				o[k+"=>"+nk] = nv
 			}
