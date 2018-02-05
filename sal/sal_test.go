@@ -5,6 +5,8 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"testing"
+
+	"github.com/airbnb/gosal/config"
 )
 
 func TestCheckin(t *testing.T) {
@@ -56,12 +58,12 @@ func checkAuth(t *testing.T, r *http.Request) {
 // setupAPI creates a sal client and a temporary server used for testing.
 func setupAPI(t *testing.T, h http.HandlerFunc) (client *Client, server *httptest.Server, cleanup func()) {
 	server = httptest.NewServer(h)
-	config := &Config{
+	conf := &config.Config{
 		Key: testPassword,
 		URL: server.URL,
 	}
 
-	client, err := NewClient(config)
+	client, err := NewClient(conf)
 	if err != nil {
 		t.Fatal(err)
 	}
