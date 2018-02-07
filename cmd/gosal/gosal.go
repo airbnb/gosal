@@ -61,8 +61,11 @@ func loadConfig(cmd *cobra.Command, conf *config.Config) error {
 		// no config file specified. Must not be required: (example: gosal version).
 		return nil
 	}
-	var err error
-	conf, err = config.New(configFile)
+	loaded, err := config.New(configFile)
+	// copy the value of loaded to conf.
+	// because go arguments are passed by value (copied) we cannot replace the entire
+	// struct here. Only modify its values.
+	*conf = *loaded
 	return errors.Wrapf(err, "loading config file %s", configFile)
 }
 
