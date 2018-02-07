@@ -10,12 +10,12 @@ import (
 func New(path string) (*Config, error) {
 	file, err := ioutil.ReadFile(path)
 	if err != nil {
-		return nil, fmt.Errorf("sal: opening client config file: %s", err)
+		return nil, fmt.Errorf("config: opening client config file: %s", err)
 	}
 
 	var conf Config
 	if err = json.Unmarshal(file, &conf); err != nil {
-		return nil, fmt.Errorf("sal: unmarshal config json: %s", err)
+		return nil, fmt.Errorf("config: unmarshal config json: %s", err)
 	}
 	conf.loaded = true
 	return &conf, nil

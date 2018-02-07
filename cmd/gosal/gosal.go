@@ -58,12 +58,12 @@ Complete documentation is available at https://github.com/airbnb/gosal/.`,
 func loadConfig(cmd *cobra.Command, conf *config.Config) error {
 	configFile := cmd.PersistentFlags().Lookup("config").Value.String()
 	if configFile == "" {
-		// no config file specified. Must no be required: (example: gosal version).
+		// no config file specified. Must not be required: (example: gosal version).
 		return nil
 	}
 	var err error
 	conf, err = config.New(configFile)
-	return errors.Wrapf(err, "loadin config file %s", configFile)
+	return errors.Wrapf(err, "loading config file %s", configFile)
 }
 
 func fatal(err error) {
