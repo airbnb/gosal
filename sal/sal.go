@@ -2,40 +2,17 @@
 package sal
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
-	"path/filepath"
 	"strings"
 
+	"github.com/airbnb/gosal/config"
 	"github.com/airbnb/gosal/reports"
+	"github.com/pkg/errors"
 )
-
-// LoadConfig loads Config from a JSON file path.
-func LoadConfig(path string) (*Config, error) {
-	file, err := ioutil.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("sal: opening client config file: %s", err)
-	}
-
-	var conf Config
-	if err = json.Unmarshal(file, &conf); err != nil {
-		return nil, fmt.Errorf("sal: unmarshal config json: %s", err)
-	}
-
-	return &conf, nil
-}
-
-// Config is Sal client config.
-type Config struct {
-	Key string
-	URL string
-}
 
 // Client is what we need to send the POST request.
 type Client struct {
@@ -46,7 +23,7 @@ type Client struct {
 }
 
 // NewClient creates a new Sal API Client using Config.
-func NewClient(conf *Config) (*Client, error) {
+func NewClient(conf *config.Config) (*Client, error) {
 	baseURL, err := url.Parse(conf.URL)
 	if err != nil {
 		return nil, fmt.Errorf("sal: parsing sal API URL: %s", err)
@@ -91,30 +68,19 @@ func (c *Client) Checkin(values url.Values) error {
 }
 
 // SendCheckin uses Checkin to send our values to Sal
-func SendCheckin() {
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	s := filepath.Join(dir, "config.json")
-	conf, err := LoadConfig(s)
-	if err != nil {
-		log.Fatal(err)
-	}
-
+func SendCheckin(conf *config.Config) error {
 	client, err := NewClient(conf)
 	if err != nil {
-		log.Fatal(err)
+		return errors.Wrap(err, "creating gosal client from config")
 	}
 
 	// Execute a checkin, providing the data to send to the checkin endpoint
-	report, err := reports.BuildReport(conf.Key)
+	report, err := reports.BuildReport(conf)
 	if err != nil {
-		log.Fatal(err)
+		return errors.Wrap(err, "build report")
 	}
 
-	client.Checkin(url.Values{
+	err = client.Checkin(url.Values{
 		"serial":          {report.Serial},
 		"key":             {report.Key},
 		"name":            {report.Name},
@@ -123,4 +89,5 @@ func SendCheckin() {
 		"run_uuid":        {report.RunUUID},
 		"base64bz2report": {report.Base64bz2Report},
 	})
+	return errors.Wrap(err, "checkin")
 }

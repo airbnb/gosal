@@ -1,5 +1,6 @@
 *.DS_Store
 gosal.exe
 gosal
+!cmd/gosal
 build/
 vendor/
