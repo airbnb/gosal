@@ -8,20 +8,26 @@ Gosal is intended to be a multi platform client for sal.
 
 ## Getting Started
 
-Currently gosal uses a `LoadConfig` function that accepts a path to a to json file. This json file should be named `config.json` and located at the absolute path to the gosal.exe executable. Use the following format:
+Your configuration file should be `json` formatted as follows:
 
 ```json
 {
   "key": "your gigantic machine group key",
   "url": "https://urltoyourserver.com/",
   "management": {
-  "tool": "puppet",
-  "path": "C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet.bat",
-  "command": "facts"
+    "tool": "puppet",
+    "path": "C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet.bat",
+    "command": "facts"
   }
 }
 
 ```
+# Running gosal
+Gosal requires the configuration file to be passed in as an argument like so...
+
+####Windows Example
+`gosal.exe --config "C:\path\to\config.json"``
+
 
 # Building
 
