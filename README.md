@@ -25,8 +25,8 @@ Your configuration file should be `json` formatted as follows:
 # Running gosal
 Gosal requires the configuration file to be passed in as an argument like so...
 
-####Windows Example
-`gosal.exe --config "C:\path\to\config.json"``
+#### Windows Example
+`gosal.exe --config "C:\path\to\config.json"`
 
 
 # Building
