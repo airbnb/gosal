@@ -17,7 +17,7 @@ type basereport struct {
 	ConsoleUser        string
 	OSFamily           string
 	MachineInfo        *MachineInfo
-	Facter             PuppetFacts
+	Facter             Facts
 }
 
 // BuildBase64bz2Report will return a compressed and encoded string of our report struct

@@ -3,28 +3,29 @@ package reports
 import (
 	"encoding/json"
 	"os/exec"
+	"strings"
 
 	"github.com/pkg/errors"
 )
 
-// PuppetFacts stores output of puppet facts command
-type PuppetFacts map[string]interface{}
+// Facts stores output of puppet & chef facts command
+type Facts map[string]interface{}
 
-// GetPuppetFacts will exec into the PuppetFacts interface
-func GetPuppetFacts(cmdPath, cmdArgs string) (PuppetFacts, error) {
-	// TODO: args should be a parsed slice?
-	cmd := exec.Command(cmdPath, cmdArgs)
+// GetPuppetFacts will exec into the Facts interface
+func GetPuppetFacts(cmdPath, cmdArgs string) (Facts, error) {
+	args := strings.Split(cmdArgs, " ")
+	cmd := exec.Command(cmdPath, args...)
 
 	// cmd.Stderr = os.Stderr
 	o, err := cmd.Output()
 	if err != nil {
-		return PuppetFacts{}, errors.Wrap(err, "exec puppet facts")
+		return Facts{}, errors.Wrap(err, "exec puppet facts")
 	}
 
-	var pf PuppetFacts
+	var pf Facts
 
 	if err := json.Unmarshal(o, &pf); err != nil {
-		return PuppetFacts{}, errors.Wrap(err, "failed unmarshalling Puppet Facts")
+		return Facts{}, errors.Wrap(err, "failed unmarshalling Puppet Facts")
 	}
 
 	v := pf["values"].(map[string]interface{})
