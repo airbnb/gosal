@@ -59,11 +59,32 @@ func GetHardwareInfo() (*HardwareInfo, error) {
 		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting processor data")
 	}
 
+	// Convert memory from kb to correct size
+	convertedMemory := float64(os.TotalVisibleMemorySize)
+	unitCount := 0
+	strMemory := ""
+
+	for convertedMemory >= 1024 {
+		convertedMemory = convertedMemory /1024
+		unitCount ++
+	}
+
+	switch unitCount {
+	case 0:
+		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " KB"
+	case 1:
+		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " MB"
+	case 2:
+		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " GB"
+	case 3:
+		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " TB"
+	}
+
 	hwinfo := HardwareInfo{
 		MachineModel:          computerSystem.Model,
 		CPUType:               cpu.CPUType,
 		CurrentProcessorSpeed: cpu.CurrentProcessorSpeed,
-		PhysicalMemory:        strconv.Itoa(os.TotalVisibleMemorySize) + " KB",
+		PhysicalMemory:        strMemory,
 	}
 
 	return &hwinfo, nil
