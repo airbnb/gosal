@@ -3,7 +3,6 @@ package reports
 import (
 	"bytes"
 	"encoding/base64"
-	"fmt"
 	"strings"
 
 	"github.com/airbnb/gosal/config"
@@ -22,19 +21,10 @@ type basereport struct {
 
 // BuildBase64bz2Report will return a compressed and encoded string of our report struct
 func BuildBase64bz2Report(conf *config.Config) (string, error) {
-	// switch for whats "facts" we would send sal
 	var facts map[string]interface{}
-	switch conf.Management.Tool {
-	case "puppet":
-		puppetFacts, err := GetPuppetFacts(conf.Management.Path, conf.Management.Command)
-		if err != nil {
-			return "", errors.Wrap(err, "puppet switch: failed to get facts")
-		}
-		facts = puppetFacts
-	case "chef":
-		fmt.Println("although perfectly normal, we dont support chef yet")
-	case "salt":
-		fmt.Println("people who run salt on the client are strange")
+	facts, err := GetFacts(conf.Management.Tool, conf.Management.Path, conf.Management.Command)
+	if err != nil {
+		return "", errors.Wrap(err, "bz2: failed to get facts")
 	}
 
 	cDrive, err := GetCDrive()
