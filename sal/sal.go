@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/airbnb/gosal/config"
 	"github.com/airbnb/gosal/reports"
@@ -54,8 +55,14 @@ func (c *Client) Checkin(values url.Values) error {
 	// We're sending URLEncoded data in the body, so tell the server what to expect
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
+	// Configure 30 second timeout
+	timeout := time.Duration(30 * time.Second)
+	httpclient := http.Client{
+		Timeout: timeout,
+	}
+
 	// Execute the request
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := httpclient.Do(req)
 	if err != nil {
 		return fmt.Errorf("failed to checkin: %s", err)
 	}
