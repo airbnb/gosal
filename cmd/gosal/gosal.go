@@ -42,7 +42,7 @@ func createRootCmd(conf *config.Config) *cobra.Command {
 Complete documentation is available at https://github.com/airbnb/gosal/.`,
 		Run: func(cmd *cobra.Command, args []string) {
 			if !conf.Loaded() {
-				fatal(errors.New("config file not loaded. Must specify --config flag."))
+				fatal(errors.New("config file not loaded. Must specify --config flag"))
 			}
 			if err := sal.SendCheckin(conf); err != nil {
 				fatal(err)

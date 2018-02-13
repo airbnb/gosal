@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 )
 
-//  New creates a Config from a JSON file.
+// New creates a Config from a JSON file.
 func New(path string) (*Config, error) {
 	file, err := ioutil.ReadFile(path)
 	if err != nil {
