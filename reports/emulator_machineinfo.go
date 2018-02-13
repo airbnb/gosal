@@ -65,8 +65,8 @@ func GetHardwareInfo() (*HardwareInfo, error) {
 	strMemory := ""
 
 	for convertedMemory >= 1024 {
-		convertedMemory = convertedMemory /1024
-		unitCount ++
+		convertedMemory = convertedMemory / 1024
+		unitCount++
 	}
 
 	switch unitCount {
