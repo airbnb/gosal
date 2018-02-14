@@ -18,13 +18,13 @@ func GetFacts(confTool, cmdPath, cmdArgs string) (Facts, error) {
 
 	o, err := cmd.Output()
 	if err != nil {
-		return Facts{}, errors.Wrap(err, "exec facts")
+		return nil, errors.Wrap(err, "exec facts")
 	}
 
 	var facts Facts
 
 	if err := json.Unmarshal(o, &facts); err != nil {
-		return Facts{}, errors.Wrap(err, "failed unmarshalling Facts")
+		return nil, errors.Wrap(err, "failed unmarshalling Facts")
 	}
 
 	switch confTool {
