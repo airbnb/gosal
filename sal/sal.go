@@ -4,9 +4,9 @@ package sal
 import (
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"net/url"
-	"net"
 	"os"
 	"strings"
 	"time"
