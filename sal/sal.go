@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"net"
 	"os"
 	"strings"
 	"time"
@@ -55,10 +56,17 @@ func (c *Client) Checkin(values url.Values) error {
 	// We're sending URLEncoded data in the body, so tell the server what to expect
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
-	// Configure 30 second timeout
-	timeout := time.Duration(30 * time.Second)
+	// Configure new http.client with timeouts
 	httpclient := http.Client{
-		Timeout: timeout,
+		Timeout: 10 * time.Second,
+		Transport: &http.Transport{
+			Dial: (&net.Dialer{
+				Timeout:   5 * time.Second,
+				KeepAlive: 5 * time.Second,
+			}).Dial,
+			TLSHandshakeTimeout:   5 * time.Second,
+			ResponseHeaderTimeout: 5 * time.Second,
+		},
 	}
 
 	// Execute the request
