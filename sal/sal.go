@@ -4,10 +4,12 @@ package sal
 import (
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/airbnb/gosal/config"
 	"github.com/airbnb/gosal/reports"
@@ -54,8 +56,21 @@ func (c *Client) Checkin(values url.Values) error {
 	// We're sending URLEncoded data in the body, so tell the server what to expect
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
+	// Configure new http.client with timeouts
+	httpclient := http.Client{
+		Timeout: 10 * time.Second,
+		Transport: &http.Transport{
+			Dial: (&net.Dialer{
+				Timeout:   5 * time.Second,
+				KeepAlive: 5 * time.Second,
+			}).Dial,
+			TLSHandshakeTimeout:   5 * time.Second,
+			ResponseHeaderTimeout: 5 * time.Second,
+		},
+	}
+
 	// Execute the request
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := httpclient.Do(req)
 	if err != nil {
 		return fmt.Errorf("failed to checkin: %s", err)
 	}
