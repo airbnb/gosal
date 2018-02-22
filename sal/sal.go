@@ -36,7 +36,6 @@ func NewClient(conf *config.Config) (*Client, error) {
 		ServerURL: baseURL,
 	}
 
-	fmt.Println(client)
 	return &client, nil
 }
 
@@ -54,8 +53,6 @@ func (c *Client) Checkin(values url.Values) error {
 
 	// The endpoint requires basic authentication, so set the username/password
 	req.SetBasicAuth(c.User, c.Password)
-
-	fmt.Println(c.Password)
 
 	// We're sending URLEncoded data in the body, so tell the server what to expect
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -78,8 +75,6 @@ func (c *Client) Checkin(values url.Values) error {
 	if err != nil {
 		return fmt.Errorf("failed to checkin: %s", err)
 	}
-
-	fmt.Println(resp)
 
 	defer resp.Body.Close()
 
