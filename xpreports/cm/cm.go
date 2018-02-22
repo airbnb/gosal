@@ -1,4 +1,4 @@
-package reports
+package cm
 
 import (
 	"encoding/json"

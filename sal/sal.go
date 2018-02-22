@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/airbnb/gosal/config"
-	"github.com/airbnb/gosal/reports"
+	"github.com/airbnb/gosal/xpreports"
 	"github.com/pkg/errors"
 )
 
@@ -35,6 +35,8 @@ func NewClient(conf *config.Config) (*Client, error) {
 		Password:  conf.Key,
 		ServerURL: baseURL,
 	}
+
+	fmt.Println(client)
 	return &client, nil
 }
 
@@ -52,6 +54,8 @@ func (c *Client) Checkin(values url.Values) error {
 
 	// The endpoint requires basic authentication, so set the username/password
 	req.SetBasicAuth(c.User, c.Password)
+
+	fmt.Println(c.Password)
 
 	// We're sending URLEncoded data in the body, so tell the server what to expect
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -75,6 +79,8 @@ func (c *Client) Checkin(values url.Values) error {
 		return fmt.Errorf("failed to checkin: %s", err)
 	}
 
+	fmt.Println(resp)
+
 	defer resp.Body.Close()
 
 	// Copy the body to the console in case there is any response
@@ -90,7 +96,7 @@ func SendCheckin(conf *config.Config) error {
 	}
 
 	// Execute a checkin, providing the data to send to the checkin endpoint
-	report, err := reports.BuildReport(conf)
+	report, err := xpreports.Build(conf)
 	if err != nil {
 		return errors.Wrap(err, "build report")
 	}
