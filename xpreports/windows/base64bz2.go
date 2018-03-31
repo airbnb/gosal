@@ -1,4 +1,4 @@
-package reports
+package windows
 
 import (
 	"bytes"
@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/airbnb/gosal/config"
+	"github.com/airbnb/gosal/xpreports/cm"
 	"github.com/dsnet/compress/bzip2"
 	"github.com/groob/plist"
 	"github.com/pkg/errors"
@@ -16,13 +17,14 @@ type basereport struct {
 	ConsoleUser        string
 	OSFamily           string
 	MachineInfo        *MachineInfo
-	Facter             Facts
+	Facter             cm.Facts
 }
 
 // BuildBase64bz2Report will return a compressed and encoded string of our report struct
 func BuildBase64bz2Report(conf *config.Config) (string, error) {
 	var facts map[string]interface{}
-	facts, err := GetFacts(conf.Management.Tool, conf.Management.Path, conf.Management.Command)
+
+	facts, err := cm.GetFacts(conf.Management.Tool, conf.Management.Path, conf.Management.Command)
 	if err != nil {
 		return "", errors.Wrap(err, "bz2: failed to get facts")
 	}
@@ -42,8 +44,6 @@ func BuildBase64bz2Report(conf *config.Config) (string, error) {
 		return "", errors.Wrap(err, "bz2: failed getting computer system")
 	}
 
-	// TODO report struct needs to switch based on config management tool
-	// Facter would change to w/e Sal supported as an input
 	report := basereport{
 		AvailableDiskSpace: cDrive.FreeSpace,
 		MachineInfo:        machineInfo,

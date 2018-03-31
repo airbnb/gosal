@@ -1,4 +1,4 @@
-package reports
+package windows
 
 import (
 	"strconv"

@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/airbnb/gosal/config"
-	"github.com/airbnb/gosal/reports"
+	"github.com/airbnb/gosal/xpreports"
 	"github.com/pkg/errors"
 )
 
@@ -35,6 +35,7 @@ func NewClient(conf *config.Config) (*Client, error) {
 		Password:  conf.Key,
 		ServerURL: baseURL,
 	}
+
 	return &client, nil
 }
 
@@ -90,7 +91,7 @@ func SendCheckin(conf *config.Config) error {
 	}
 
 	// Execute a checkin, providing the data to send to the checkin endpoint
-	report, err := reports.BuildReport(conf)
+	report, err := xpreports.Build(conf)
 	if err != nil {
 		return errors.Wrap(err, "build report")
 	}

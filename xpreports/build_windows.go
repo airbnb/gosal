@@ -1,29 +1,29 @@
-package reports
+package xpreports
 
 import (
 	"strconv"
 
 	"github.com/airbnb/gosal/config"
+	"github.com/airbnb/gosal/xpreports/windows"
 	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
 )
 
-// BuildReport builds the report object
-func BuildReport(conf *config.Config) (*Report, error) {
-
-	win32Bios, err := GetWin32Bios()
+// buildReport creates a report using windows APIs and paths.
+func buildReport(conf *config.Config) (*Report, error) {
+	win32Bios, err := windows.GetWin32Bios()
 	if err != nil {
 		return nil, errors.Wrap(err, "get win32Bios")
 	}
 
-	CDrive, err := GetCDrive()
+	CDrive, err := windows.GetCDrive()
 	if err != nil {
 		return nil, errors.Wrap(err, "reports: getting win32 disk")
 	}
 
 	u1 := uuid.NewV4().String()
 
-	encodedCompressedPlist, err := BuildBase64bz2Report(conf)
+	encodedCompressedPlist, err := windows.BuildBase64bz2Report(conf)
 	if err != nil {
 		return nil, errors.Wrap(err, "reports: getting plist")
 	}
@@ -40,15 +40,4 @@ func BuildReport(conf *config.Config) (*Report, error) {
 
 	// fmt.Printf("%+v\n", report)
 	return report, nil
-}
-
-// Report structure
-type Report struct {
-	Serial          string
-	Key             string
-	Name            string
-	DiskSize        string
-	SalVersion      string
-	RunUUID         string
-	Base64bz2Report string
 }
