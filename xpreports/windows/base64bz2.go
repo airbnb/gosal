@@ -3,6 +3,7 @@ package windows
 import (
 	"bytes"
 	"encoding/base64"
+	"fmt"
 	"strings"
 
 	"github.com/airbnb/gosal/config"
@@ -28,6 +29,18 @@ func BuildBase64bz2Report(conf *config.Config) (string, error) {
 	if err != nil {
 		return "", errors.Wrap(err, "bz2: failed to get facts")
 	}
+
+	// installs, err := GetManagedInstalls()
+	// if err != nil {
+	// 	return "", errors.Wrap(err, "message")
+	// }
+
+	test, err := MarshalManagedInstallFields()
+	if err != nil {
+		return "", errors.Wrap(err, "message")
+	}
+
+	fmt.Println(test)
 
 	cDrive, err := GetCDrive()
 	if err != nil {
