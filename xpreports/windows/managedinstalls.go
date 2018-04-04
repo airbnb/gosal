@@ -27,15 +27,15 @@ func GetManagedInstalls() ([]ManagedInstalls, error) {
 }
 
 // marshalManagedInstallFields takes a golang struct and uses field tags to conver to what sal wants
-func MarshalManagedInstallFields() ([]ManagedInstallsFormatted, error) {
+func MarshalManagedInstallFields() ([]byte, error) {
 
 	mi, err := GetManagedInstalls()
 	if err != nil {
 		return nil, errors.Wrap(err, "message")
 	}
-
+	var all []ManagedInstallsFormatted
 	for _, element := range mi {
-		json.Marshal(&ManagedInstallsFormatted{
+		all = append(all, ManagedInstallsFormatted{
 			Description:      element.Description,
 			DisplayName:      element.DisplayName,
 			Installed:        element.Installed,
@@ -46,10 +46,27 @@ func MarshalManagedInstallFields() ([]ManagedInstallsFormatted, error) {
 
 	}
 
-	// fmt.Println(string(mif))
+	data, err := json.MarshalIndent(&all, "", "  ")
 
-	return nil, nil
+	return data, nil
 }
+
+func UnmarshalManagedInstallsFormatted() (Installs, error) {
+	mmif, err := MarshalManagedInstallFields()
+	if err != nil {
+		return nil, errors.Wrap(err, "message")
+	}
+
+	var i Installs
+
+	if err := json.Unmarshal(mmif, &i); err != nil {
+		return nil, errors.Wrap(err, "failed unmarshalling Facts")
+	}
+
+	return i, nil
+}
+
+type Installs []map[string]interface{}
 
 type ManagedInstallsFormatted struct {
 	Description      string `json:"description"`

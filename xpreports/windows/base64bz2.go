@@ -3,7 +3,6 @@ package windows
 import (
 	"bytes"
 	"encoding/base64"
-	"fmt"
 	"strings"
 
 	"github.com/airbnb/gosal/config"
@@ -19,6 +18,7 @@ type basereport struct {
 	OSFamily           string
 	MachineInfo        *MachineInfo
 	Facter             cm.Facts
+	ManagedInstalls    Installs
 }
 
 // BuildBase64bz2Report will return a compressed and encoded string of our report struct
@@ -30,17 +30,10 @@ func BuildBase64bz2Report(conf *config.Config) (string, error) {
 		return "", errors.Wrap(err, "bz2: failed to get facts")
 	}
 
-	// installs, err := GetManagedInstalls()
-	// if err != nil {
-	// 	return "", errors.Wrap(err, "message")
-	// }
-
-	test, err := MarshalManagedInstallFields()
+	installs, err := UnmarshalManagedInstallsFormatted()
 	if err != nil {
 		return "", errors.Wrap(err, "message")
 	}
-
-	fmt.Println(test)
 
 	cDrive, err := GetCDrive()
 	if err != nil {
@@ -63,6 +56,7 @@ func BuildBase64bz2Report(conf *config.Config) (string, error) {
 		ConsoleUser:        strings.Split(computerSystem.UserName, "\\")[1],
 		OSFamily:           "Windows",
 		Facter:             facts,
+		ManagedInstalls:    installs,
 	}
 
 	encodedReport, err := report.CompressAndEncode()
