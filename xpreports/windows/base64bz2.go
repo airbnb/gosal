@@ -30,7 +30,7 @@ func BuildBase64bz2Report(conf *config.Config) (string, error) {
 		return "", errors.Wrap(err, "bz2: failed to get facts")
 	}
 
-	installs, err := UnmarshalManagedInstallsFormatted()
+	installs, err := CreateManagedInstalls()
 	if err != nil {
 		return "", errors.Wrap(err, "message")
 	}
