@@ -7,6 +7,7 @@ import (
 	"github.com/airbnb/gosal/config"
 	"github.com/airbnb/gosal/xpreports/windows"
 	"github.com/pkg/errors"
+	uuid "github.com/satori/go.uuid"
 )
 
 // buildReport creates a report using windows APIs and paths.
