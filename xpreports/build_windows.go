@@ -3,8 +3,8 @@ package xpreports
 import (
 	"strconv"
 
-	"github.com/1dustindavis/gosal/version"
 	"github.com/airbnb/gosal/config"
+	"github.com/airbnb/gosal/version"
 	"github.com/airbnb/gosal/xpreports/windows"
 	"github.com/pkg/errors"
 	uuid "github.com/satori/go.uuid"
