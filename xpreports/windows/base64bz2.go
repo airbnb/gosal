@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"strings"
+	"time"
 
 	"github.com/airbnb/gosal/config"
 	"github.com/airbnb/gosal/xpreports/cm"
@@ -18,6 +19,7 @@ type basereport struct {
 	OSFamily           string
 	MachineInfo        *MachineInfo
 	Facter             cm.Facts
+	StartTime          string
 }
 
 // BuildBase64bz2Report will return a compressed and encoded string of our report struct
@@ -45,6 +47,7 @@ func BuildBase64bz2Report(conf *config.Config) (string, error) {
 	}
 
 	report := basereport{
+		StartTime:          time.Now().Format("01-02-2006"),
 		AvailableDiskSpace: cDrive.FreeSpace,
 		MachineInfo:        machineInfo,
 		ConsoleUser:        strings.Split(computerSystem.UserName, "\\")[1],
