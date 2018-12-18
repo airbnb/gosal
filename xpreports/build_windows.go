@@ -4,9 +4,10 @@ import (
 	"strconv"
 
 	"github.com/airbnb/gosal/config"
+	"github.com/airbnb/gosal/version"
 	"github.com/airbnb/gosal/xpreports/windows"
 	"github.com/pkg/errors"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 // buildReport creates a report using windows APIs and paths.
@@ -28,12 +29,15 @@ func buildReport(conf *config.Config) (*Report, error) {
 		return nil, errors.Wrap(err, "reports: getting plist")
 	}
 
+	// Get version information
+	v := version.Version()
+
 	report := &Report{
 		Serial:          win32Bios.SerialNumber,
 		Key:             conf.Key,
 		Name:            win32Bios.PSComputerName,
 		DiskSize:        strconv.Itoa(CDrive.Size),
-		SalVersion:      strconv.Itoa(1),
+		SalVersion:      v.Version,
 		RunUUID:         u1,
 		Base64bz2Report: encodedCompressedPlist,
 	}
