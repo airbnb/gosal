@@ -33,7 +33,6 @@ func BuildBase64bz2Report(conf *config.Config) (string, error) {
 			return "", errors.Wrap(err, "bz2: failed to get facts")
 		}
 	}
-	// fmt.Printf("%+v\n", conf)
 
 	cDrive, err := GetCDrive()
 	if err != nil {
