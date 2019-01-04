@@ -26,9 +26,12 @@ type basereport struct {
 func BuildBase64bz2Report(conf *config.Config) (string, error) {
 	var facts map[string]interface{}
 
-	facts, err := cm.GetFacts(conf.Management.Tool, conf.Management.Path, conf.Management.Command)
-	if err != nil {
-		return "", errors.Wrap(err, "bz2: failed to get facts")
+	if conf.Management != nil {
+		facts, err := cm.GetFacts(conf.Management.Tool, conf.Management.Path, conf.Management.Command)
+		_ = facts // not sure how to handle unused variable other than this.
+		if err != nil {
+			return "", errors.Wrap(err, "bz2: failed to get facts")
+		}
 	}
 
 	cDrive, err := GetCDrive()
