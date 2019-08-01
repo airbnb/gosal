@@ -15,11 +15,20 @@ import (
 func buildReport(conf *config.Config) (*Report, error) {
 	u1 := uuid.NewV4().String()
 
-	h, _ := host.Info()
+	host, err := host.Info()
+	if err != nil {
+		return nil, errors.Wrap(err, "reports: getting host information")
+	}
 
-	disk, _ := linux.GetRootVolume()
+	disk, err := linux.GetRootVolume()
+	if err != nil {
+		return nil, errors.Wrap(err, "reports: getting root volume")
+	}
 
-	serial, _ := linux.GetlinuxSerial()
+	serial, err := linux.GetlinuxSerial()
+	if err != nil {
+		return nil, errors.Wrap(err, "reports: getting serial")
+	}
 
 	encodedCompressedPlist, err := linux.BuildBase64bz2Report(conf)
 	if err != nil {
@@ -32,7 +41,7 @@ func buildReport(conf *config.Config) (*Report, error) {
 	report := &Report{
 		Serial:          serial,
 		Key:             conf.Key,
-		Name:            h.Hostname,
+		Name:            host.Hostname,
 		DiskSize:        strconv.Itoa(disk.Size),
 		SalVersion:      v.Version,
 		RunUUID:         u1,
