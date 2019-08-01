@@ -1,21 +1,22 @@
 package linux
 
 import (
-	"errors"
-	"os/exec"
-	"regexp"
+	"github.com/dselans/dmidecode"
 )
 
-// GetMachineID generates machine-dependent ID string for a machine.
-// All Darwin system should have the IOPlatformSerialNumber attribute.
-func GetMachineID() (string, error) {
-	out, err := exec.Command("ioreg", "-rd1", "-c", "IOPlatformExpertDevice").Output()
-	if err == nil {
-		re := regexp.MustCompile("\"IOPlatformSerialNumber\" = \"(.*)\"")
-		ret := re.FindStringSubmatch(string(out))
-		if len(ret) == 2 {
-			return ret[1], nil
-		}
+// GetlinuxSerial returns the system serial number
+func GetlinuxSerial() (string, error) {
+	dmi := dmidecode.New()
+
+	err := dmi.Run()
+	if err != nil {
+		return "", err
 	}
-	return "", errors.New("can't generate machine ID")
+
+	byNameData, err := dmi.SearchByName("System Information")
+	if err != nil {
+		return "", err
+	}
+
+	return byNameData[0]["Serial Number"], nil
 }

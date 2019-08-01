@@ -17,10 +17,9 @@ func buildReport(conf *config.Config) (*Report, error) {
 
 	h, _ := host.Info()
 
-	disk, err := linux.GetDisk()
-	if err != nil {
-		return nil, errors.Wrap(err, "reports: getting disk info")
-	}
+	disk, _ := linux.GetRootVolume()
+
+	serial, _ := linux.GetlinuxSerial()
 
 	encodedCompressedPlist, err := linux.BuildBase64bz2Report(conf)
 	if err != nil {
@@ -31,7 +30,7 @@ func buildReport(conf *config.Config) (*Report, error) {
 	v := version.Version()
 
 	report := &Report{
-		Serial:          "123456789",
+		Serial:          serial,
 		Key:             conf.Key,
 		Name:            h.Hostname,
 		DiskSize:        strconv.Itoa(disk.Size),
