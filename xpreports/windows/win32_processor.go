@@ -31,3 +31,19 @@ type Win32Processor struct {
 	CPUType               string `json:"Name"`
 	CurrentProcessorSpeed int    `json:"MaxClockSpeed"`
 }
+
+/*
+[
+    "",
+    "",
+    "Caption           : Intel64 Family 6 Model 158 Stepping 10",
+    "DeviceID          : CPU0",
+    "Manufacturer      : GenuineIntel",
+    "MaxClockSpeed     : 2904",
+    "Name              : Intel(R) Core(TM) i9-8950HK CPU @ 2.90GHz",
+    "SocketDesignation : CPU 0",
+    "",
+    "",
+    ""
+]
+*/

@@ -35,7 +35,6 @@ type Win32LogicalDisk struct {
 
 // GetCDrive explicity looks for C Drive
 func GetCDrive() (Win32LogicalDisk, error) {
-
 	disks, _ := GetWin32LogicalDisk()
 
 	var c Win32LogicalDisk
@@ -50,3 +49,26 @@ func GetCDrive() (Win32LogicalDisk, error) {
 
 	return c, nil
 }
+
+/*
+[
+    "",
+    "",
+    "DeviceID     : C:",
+    "DriveType    : 3",
+    "ProviderName : ",
+    "FreeSpace    : 157533339648",
+    "Size         : 213900656640",
+    "VolumeName   : ",
+    "",
+    "DeviceID     : D:",
+    "DriveType    : 5",
+    "ProviderName : ",
+    "FreeSpace    : ",
+    "Size         : ",
+    "VolumeName   : ",
+    "",
+    "",
+    ""
+]
+*/

@@ -1,6 +1,7 @@
-package windows
+package darwin
 
 import (
+	"os"
 	"strconv"
 
 	"github.com/pkg/errors"
@@ -42,21 +43,24 @@ type HardwareInfo struct {
 
 // GetHardwareInfo creates the necessary structure sal expects
 func GetHardwareInfo() (*HardwareInfo, error) {
-	computerSystem, err := GetWin32ComputerSystem()
-	if err != nil {
-		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting system data")
-	}
-
-	os, err := GetWin32OS()
-	if err != nil {
-		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting os data")
-	}
-
-	cpu, err := GetWin32Processor()
-	if err != nil {
-		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting processor data")
-	}
-
+	/*
+		computerSystem, err := GetWin32ComputerSystem()
+		if err != nil {
+			return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting system data")
+		}
+	*/
+	/*
+		os, err := GetWin32OS()
+		if err != nil {
+			return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting os data")
+		}
+	*/
+	/*
+		cpu, err := GetWin32Processor()
+		if err != nil {
+			return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting processor data")
+		}
+	*/
 	// Convert memory from kb to correct size
 	convertedMemory := float64(os.TotalVisibleMemorySize)
 	unitCount := 0
