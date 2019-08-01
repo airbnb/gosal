@@ -63,7 +63,6 @@ func BuildBase64bz2Report(conf *config.Config) (string, error) {
 }
 
 func (r *basereport) CompressAndEncode() (string, error) {
-
 	var buf bytes.Buffer
 
 	bzw, err := bzip2.NewWriter(&buf, &bzip2.WriterConfig{Level: bzip2.BestSpeed})

@@ -8,7 +8,6 @@ import (
 
 // EmulateMachineInfo copies its behavior from macOS, and provides struct data to Sal
 func EmulateMachineInfo() (*MachineInfo, error) {
-
 	win32OS, err := GetWin32OS()
 	if err != nil {
 		return nil, errors.Wrap(err, "emulatemachineinfo: failed getting os data")
@@ -43,7 +42,6 @@ type HardwareInfo struct {
 
 // GetHardwareInfo creates the necessary structure sal expects
 func GetHardwareInfo() (*HardwareInfo, error) {
-
 	computerSystem, err := GetWin32ComputerSystem()
 	if err != nil {
 		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting system data")

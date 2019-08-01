@@ -14,7 +14,7 @@ import (
 
 func createVersionCmd() *cobra.Command {
 	var fFull bool
-	var versionCmd = &cobra.Command{
+	versionCmd := &cobra.Command{
 		Use:   "version",
 		Short: "Print the version number of gosal",
 		Long:  `Print the version number and build information of gosal`,
@@ -34,7 +34,7 @@ func createVersionCmd() *cobra.Command {
 
 func createRootCmd(conf *config.Config) *cobra.Command {
 	// rootCmd represents the base command when called without any subcommands
-	var rootCmd = &cobra.Command{
+	rootCmd := &cobra.Command{
 		Use:   "gosal",
 		Short: "gosal uploads machine details to sal",
 		Long: `Gosal is intended to be a multi platform client for sal.

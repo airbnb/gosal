@@ -13,7 +13,6 @@ func GetWin32OS() (Win32OS, error) {
 
 	// cmd.Stderr = os.Stderr
 	o, err := cmd.Output()
-
 	if err != nil {
 		return Win32OS{}, errors.Wrap(err, "exec gwmi Win32_OperatingSystem")
 	}
@@ -29,7 +28,7 @@ func GetWin32OS() (Win32OS, error) {
 
 // Win32OS structure
 type Win32OS struct {
-	Caption                string `json:"Caption"` //os version
+	Caption                string `json:"Caption"` // os version
 	TotalVirtualMemorySize int    `json:"TotalVirtualMemorySize"`
 	TotalVisibleMemorySize int    `json:"TotalVisibleMemorySize"`
 }
