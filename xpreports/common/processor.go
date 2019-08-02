@@ -1,8 +1,6 @@
 package common
 
-import (
-	"github.com/shirou/gopsutil/cpu"
-)
+import "github.com/shirou/gopsutil/cpu"
 
 func GetProcessor() (Processor, error) {
 	c, _ := cpu.Info()

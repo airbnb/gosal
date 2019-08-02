@@ -3,7 +3,6 @@ package common
 import "github.com/shirou/gopsutil/mem"
 
 func GetOS() (OS, error) {
-
 	v, _ := mem.VirtualMemory()
 
 	memory := OS{
@@ -13,7 +12,6 @@ func GetOS() (OS, error) {
 	}
 
 	return memory, nil
-
 }
 
 type OS struct {

@@ -6,8 +6,8 @@ import (
 	"github.com/dselans/dmidecode"
 )
 
-// GetWMacOSComputerSystem exports  powershell class
-func GetWMacOSComputerSystem() (MacOSComputerSystem, error) {
+// GetMacOSComputerSystem exports  powershell class
+func GetMacOSComputerSystem() (MacOSComputerSystem, error) {
 	var CompSys MacOSComputerSystem
 
 	dmi := dmidecode.New()

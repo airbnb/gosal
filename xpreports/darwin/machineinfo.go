@@ -43,8 +43,7 @@ type HardwareInfo struct {
 
 // GetHardwareInfo creates the necessary structure sal expects
 func GetHardwareInfo() (*HardwareInfo, error) {
-
-	computerSystem, err := GetWin32ComputerSystem()
+	computerSystem, err := GetMacOSComputerSystem()
 	if err != nil {
 		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting system data")
 	}

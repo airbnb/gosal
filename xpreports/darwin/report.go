@@ -36,11 +36,16 @@ func BuildBase64bz2Report(conf *config.Config) (string, error) {
 		facts, _ = cm.GetFacts(conf.Management.Tool, conf.Management.Path, conf.Management.Command)
 	}
 
+	usernames, err := common.GetLoggedInUsers()
+	if err != nil {
+		return "", errors.Wrap(err, "Getting logged in users")
+	}
+
 	report := basereport{
 		StartTime:          time.Now().Format("01-02-2006"),
 		AvailableDiskSpace: disk.FreeSpace,
 		MachineInfo:        machineinfo,
-		ConsoleUser:        "Gavin",
+		ConsoleUser:        usernames[0],
 		OSFamily:           h.OS,
 		Facter:             facts,
 	}
