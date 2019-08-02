@@ -24,7 +24,6 @@ type basereport struct {
 
 // BuildBase64bz2Report will return a compressed and encoded string of our report struct
 func BuildBase64bz2Report(conf *config.Config) (string, error) {
-
 	h, err := host.Info()
 	if err != nil {
 		return "", errors.Wrap(err, "Getting logged in users")

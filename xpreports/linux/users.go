@@ -6,7 +6,6 @@ import (
 )
 
 func LoggedInUsers() ([]string, error) {
-
 	cmd := exec.Command("who", "-us")
 	users, _ := cmd.CombinedOutput()
 
