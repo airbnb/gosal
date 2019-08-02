@@ -7,6 +7,7 @@ import (
 
 	"github.com/airbnb/gosal/config"
 	"github.com/airbnb/gosal/xpreports/cm"
+	"github.com/airbnb/gosal/xpreports/common"
 	"github.com/dsnet/compress/bzip2"
 	"github.com/groob/plist"
 	"github.com/pkg/errors"
@@ -29,7 +30,7 @@ func BuildBase64bz2Report(conf *config.Config) (string, error) {
 	var facts map[string]interface{}
 	var machineinfo map[string]interface{}
 
-	disk, _ := GetDisk()
+	disk, _ := common.GetDisk()
 
 	if conf.Management != nil {
 		facts, _ = cm.GetFacts(conf.Management.Tool, conf.Management.Path, conf.Management.Command)
