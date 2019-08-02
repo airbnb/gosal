@@ -39,12 +39,3 @@
 [[constraint]]
   name = "github.com/shirou/gopsutil"
   version = "2.19.6"
-
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/VictorLowther/godmi"
-
-[[constraint]]
-  name = "github.com/denisbrodbeck/machineid"
-  version = "1.0.1"
