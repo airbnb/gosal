@@ -8,14 +8,24 @@ import (
 // GetLinuxComputerSystem
 func GetLinuxComputerSystem() (LinuxComputerSystem, error) {
 	dmi := dmidecode.New()
-	byNameData, _ := dmi.SearchByName("System Information")
+	
+
+
+if err := dmi.Run(); err != nil {
+   
+}
+
+	byNameData, _ := dmi.SearchByName("Base Board Information")
+
+
+
 
 	usernames, _ := common.GetLoggedInUsers()
 
 	CompSys := LinuxComputerSystem{
 		UserName:     usernames[0],
 		Manufacturer: byNameData[0]["Manufacturer"],
-		Model:        byNameData[0]["Version"],
+		Model:        byNameData[0]["Product Name"],
 	}
 
 	return CompSys, nil
