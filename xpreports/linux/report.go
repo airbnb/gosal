@@ -17,7 +17,7 @@ type basereport struct {
 	AvailableDiskSpace int
 	ConsoleUser        string
 	OSFamily           string
-	MachineInfo        map[string]interface{}
+	MachineInfo        *MachineInfo
 	Facter             cm.Facts
 	StartTime          string
 }
@@ -25,7 +25,11 @@ type basereport struct {
 // BuildBase64bz2Report will return a compressed and encoded string of our report struct
 func BuildBase64bz2Report(conf *config.Config) (string, error) {
 	var facts map[string]interface{}
-	var machineinfo map[string]interface{}
+
+	machineInfo, err := EmulateMachineInfo()
+	if err != nil {
+		return "", errors.Wrap(err, "bz2: failed getting machine info")
+	}
 
 	disk, err := common.GetDisk()
 	if err != nil {
@@ -44,7 +48,7 @@ func BuildBase64bz2Report(conf *config.Config) (string, error) {
 	report := basereport{
 		StartTime:          time.Now().Format("01-02-2006"),
 		AvailableDiskSpace: disk.FreeSpace,
-		MachineInfo:        machineinfo,
+		MachineInfo:        machineInfo,
 		ConsoleUser:        usernames[0],
 		OSFamily:           "Linux",
 		Facter:             facts,
