@@ -5,6 +5,7 @@ import (
 
 	"github.com/airbnb/gosal/config"
 	"github.com/airbnb/gosal/version"
+	"github.com/airbnb/gosal/xpreports/common"
 	"github.com/airbnb/gosal/xpreports/linux"
 	"github.com/pkg/errors"
 	uuid "github.com/satori/go.uuid"
@@ -20,7 +21,7 @@ func buildReport(conf *config.Config) (*Report, error) {
 		return nil, errors.Wrap(err, "reports: getting host information")
 	}
 
-	disk, err := linux.GetRootVolume()
+	disk, err := common.GetDisk()
 	if err != nil {
 		return nil, errors.Wrap(err, "reports: getting root volume")
 	}

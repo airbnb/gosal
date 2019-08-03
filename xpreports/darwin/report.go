@@ -7,40 +7,47 @@ import (
 
 	"github.com/airbnb/gosal/config"
 	"github.com/airbnb/gosal/xpreports/cm"
+	"github.com/airbnb/gosal/xpreports/common"
 	"github.com/dsnet/compress/bzip2"
 	"github.com/groob/plist"
 	"github.com/pkg/errors"
-	"github.com/shirou/gopsutil/host"
 )
 
 type basereport struct {
 	AvailableDiskSpace int
 	ConsoleUser        string
 	OSFamily           string
-	MachineInfo        map[string]interface{}
+	MachineInfo        *MachineInfo
 	Facter             cm.Facts
 	StartTime          string
 }
 
 // BuildBase64bz2Report will return a compressed and encoded string of our report struct
 func BuildBase64bz2Report(conf *config.Config) (string, error) {
-	h, _ := host.Info()
-
 	var facts map[string]interface{}
-	var machineinfo map[string]interface{}
 
-	disk, _ := GetDisk()
+	machineInfo, err := EmulateMachineInfo()
+	if err != nil {
+		return "", errors.Wrap(err, "bz2: failed getting machine info")
+	}
+
+	disk, _ := common.GetDisk()
 
 	if conf.Management != nil {
 		facts, _ = cm.GetFacts(conf.Management.Tool, conf.Management.Path, conf.Management.Command)
 	}
 
+	usernames, err := common.GetLoggedInUsers()
+	if err != nil {
+		return "", errors.Wrap(err, "Getting logged in users")
+	}
+
 	report := basereport{
 		StartTime:          time.Now().Format("01-02-2006"),
 		AvailableDiskSpace: disk.FreeSpace,
-		MachineInfo:        machineinfo,
-		ConsoleUser:        "Gavin",
-		OSFamily:           h.OS,
+		MachineInfo:        machineInfo,
+		ConsoleUser:        usernames[0],
+		OSFamily:           "Darwin",
 		Facter:             facts,
 	}
 

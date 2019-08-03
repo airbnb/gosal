@@ -5,6 +5,7 @@ import (
 
 	"github.com/airbnb/gosal/config"
 	"github.com/airbnb/gosal/version"
+	"github.com/airbnb/gosal/xpreports/common"
 	"github.com/airbnb/gosal/xpreports/darwin"
 	"github.com/pkg/errors"
 	uuid "github.com/satori/go.uuid"
@@ -19,7 +20,7 @@ func buildReport(conf *config.Config) (*Report, error) {
 
 	s, _ := darwin.GetMachineID()
 
-	disk, err := darwin.GetDisk()
+	disk, err := common.GetDisk()
 	if err != nil {
 		return nil, errors.Wrap(err, "reports: getting disk info")
 	}

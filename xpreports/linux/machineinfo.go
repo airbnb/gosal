@@ -1,4 +1,4 @@
-package darwin
+package linux
 
 import (
 	"strconv"
@@ -43,7 +43,7 @@ type HardwareInfo struct {
 
 // GetHardwareInfo creates the necessary structure sal expects
 func GetHardwareInfo() (*HardwareInfo, error) {
-	computerSystem, err := GetMacOSComputerSystem()
+	computerSystem, err := GetLinuxComputerSystem()
 	if err != nil {
 		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting system data")
 	}

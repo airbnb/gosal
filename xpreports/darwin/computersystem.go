@@ -1,21 +1,29 @@
 package darwin
 
 import (
-	"fmt"
-
-	"github.com/dselans/dmidecode"
+	"os/exec"
+	"regexp"
 )
 
-// GetWin32ComputerSystem exports win32_ComputerSystem powershell class
-func GetWin32ComputerSystem() (MacOSComputerSystem, error) {
-	var CompSys MacOSComputerSystem
+// GetMacOSComputerSystem exports  powershell class
+func GetMacOSComputerSystem() (MacOSComputerSystem, error) {
+	out, err := exec.Command("ioreg", "-rd1", "-c", "IOPlatformExpertDevice").Output()
+	if err == nil {
+		re := regexp.MustCompile("\"model\" = \"(.*)\"")
+		ret := re.FindStringSubmatch(string(out))
+		if len(ret) == 2 {
+			// return ret[1], nil
+		}
+	}
+	// usernames, _ := common.GetLoggedInUsers()
 
-	dmi := dmidecode.New()
-	if err := dmi.Run(); err != nil {
-		fmt.Printf("Unable to get dmidecode information. Error: %v\n", err)
+	compSys := MacOSComputerSystem{
+		UserName:     "gavin",
+		Manufacturer: "apple",
+		Model:        "Precision 5820 Tower",
 	}
 
-	return CompSys, nil
+	return compSys, nil
 }
 
 // Win32ComputerSystem structure

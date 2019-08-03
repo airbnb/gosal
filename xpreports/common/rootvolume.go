@@ -1,4 +1,4 @@
-package darwin
+package common
 
 import "github.com/shirou/gopsutil/disk"
 

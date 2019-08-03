@@ -1,11 +1,11 @@
-package linux
+package common
 
 import (
 	"os/exec"
 	"strings"
 )
 
-func LoggedInUsers() ([]string, error) {
+func GetLoggedInUsers() ([]string, error) {
 	cmd := exec.Command("who", "-us")
 	users, _ := cmd.CombinedOutput()
 
