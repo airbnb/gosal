@@ -52,7 +52,7 @@ func BuildBase64bz2Report(conf *config.Config) (string, error) {
 		AvailableDiskSpace: disk.FreeSpace,
 		MachineInfo:        machineinfo,
 		ConsoleUser:        usernames[0],
-		OSFamily:           h.OS,
+		OSFamily:           "Linux",
 		Facter:             facts,
 	}
 

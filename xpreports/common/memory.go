@@ -6,7 +6,7 @@ func GetOS() (OS, error) {
 	v, _ := mem.VirtualMemory()
 
 	memory := OS{
-		Caption:                "undefined",
+		Caption:                "10.14.6", //macOS 10.14.5 x86_64
 		TotalVirtualMemorySize: v.Total,
 		TotalVisibleMemorySize: v.Total / 1024, // Need to debug.
 	}

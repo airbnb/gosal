@@ -11,7 +11,6 @@ import (
 	"github.com/dsnet/compress/bzip2"
 	"github.com/groob/plist"
 	"github.com/pkg/errors"
-	"github.com/shirou/gopsutil/host"
 )
 
 type basereport struct {
@@ -25,7 +24,6 @@ type basereport struct {
 
 // BuildBase64bz2Report will return a compressed and encoded string of our report struct
 func BuildBase64bz2Report(conf *config.Config) (string, error) {
-	h, _ := host.Info()
 
 	var facts map[string]interface{}
 
@@ -50,7 +48,7 @@ func BuildBase64bz2Report(conf *config.Config) (string, error) {
 		AvailableDiskSpace: disk.FreeSpace,
 		MachineInfo:        machineInfo,
 		ConsoleUser:        usernames[0],
-		OSFamily:           h.OS,
+		OSFamily:           "Darwin",
 		Facter:             facts,
 	}
 

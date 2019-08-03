@@ -78,7 +78,7 @@ func GetHardwareInfo() (*HardwareInfo, error) {
 	case 3:
 		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " TB"
 	}
-	print(strMemory)
+
 	hwinfo := HardwareInfo{
 		MachineModel:          computerSystem.Model,
 		CPUType:               cpu.CPUType,

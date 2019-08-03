@@ -18,9 +18,9 @@ func GetMacOSComputerSystem() (MacOSComputerSystem, error) {
 	//	return "", errors.New("can't generate machine ID")
 
 	compSys := MacOSComputerSystem{
-		UserName:     "",
+		UserName:     "gavin",
 		Manufacturer: "apple",
-		Model:        "10",
+		Model:        "Precision 5820 Tower",
 	}
 
 	return compSys, nil
