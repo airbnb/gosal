@@ -48,7 +48,7 @@ func GetHardwareInfo() (*HardwareInfo, error) {
 		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting system data")
 	}
 
-	os, err := common.GetOS()
+	memory, err := common.GetOS()
 	if err != nil {
 		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting os data")
 	}
@@ -59,7 +59,7 @@ func GetHardwareInfo() (*HardwareInfo, error) {
 	}
 
 	// Convert memory from kb to correct size
-	convertedMemory := float64(os.TotalVisibleMemorySize)
+	convertedMemory := float64(memory.TotalVisibleMemorySize)
 	unitCount := 0
 	strMemory := ""
 
@@ -78,7 +78,7 @@ func GetHardwareInfo() (*HardwareInfo, error) {
 	case 3:
 		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " TB"
 	}
-
+	print(strMemory)
 	hwinfo := HardwareInfo{
 		MachineModel:          computerSystem.Model,
 		CPUType:               cpu.CPUType,

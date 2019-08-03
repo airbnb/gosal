@@ -32,19 +32,3 @@ type Win32OS struct {
 	TotalVirtualMemorySize int    `json:"TotalVirtualMemorySize"`
 	TotalVisibleMemorySize int    `json:"TotalVisibleMemorySize"`
 }
-
-/*
-[
-    "",
-    "",
-    "SystemDirectory : C:\\WINDOWS\\system32",
-    "Organization    : ",
-    "BuildNumber     : 17763",
-    "RegisteredUser  : Windows User",
-    "SerialNumber    : 00331-20092-26760-AA304",
-    "Version         : 10.0.17763",
-    "",
-    "",
-    ""
-]
-*/

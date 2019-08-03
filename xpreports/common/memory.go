@@ -7,8 +7,8 @@ func GetOS() (OS, error) {
 
 	memory := OS{
 		Caption:                "undefined",
-		TotalVirtualMemorySize: int(v.Total),
-		TotalVisibleMemorySize: int(v.SwapTotal) + int(v.Total),
+		TotalVirtualMemorySize: v.Total,
+		TotalVisibleMemorySize: v.Total / 1024, // Need to debug.
 	}
 
 	return memory, nil
@@ -16,6 +16,6 @@ func GetOS() (OS, error) {
 
 type OS struct {
 	Caption                string
-	TotalVirtualMemorySize int
-	TotalVisibleMemorySize int
+	TotalVirtualMemorySize uint64
+	TotalVisibleMemorySize uint64
 }

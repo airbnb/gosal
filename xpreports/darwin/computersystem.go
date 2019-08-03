@@ -1,21 +1,29 @@
 package darwin
 
 import (
-	"fmt"
-
-	"github.com/dselans/dmidecode"
+	"os/exec"
+	"regexp"
 )
 
 // GetMacOSComputerSystem exports  powershell class
 func GetMacOSComputerSystem() (MacOSComputerSystem, error) {
-	var CompSys MacOSComputerSystem
+	out, err := exec.Command("ioreg", "-rd1", "-c", "IOPlatformExpertDevice").Output()
+	if err == nil {
+		re := regexp.MustCompile("\"model\" = \"(.*)\"")
+		ret := re.FindStringSubmatch(string(out))
+		if len(ret) == 2 {
+			// return ret[1], nil
+		}
+	}
+	//	return "", errors.New("can't generate machine ID")
 
-	dmi := dmidecode.New()
-	if err := dmi.Run(); err != nil {
-		fmt.Printf("Unable to get dmidecode information. Error: %v\n", err)
+	compSys := MacOSComputerSystem{
+		UserName:     "",
+		Manufacturer: "apple",
+		Model:        "10",
 	}
 
-	return CompSys, nil
+	return compSys, nil
 }
 
 // Win32ComputerSystem structure
