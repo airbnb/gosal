@@ -8,17 +8,11 @@ import (
 // GetLinuxComputerSystem
 func GetLinuxComputerSystem() (LinuxComputerSystem, error) {
 	dmi := dmidecode.New()
-	
 
-
-if err := dmi.Run(); err != nil {
-   
-}
+	if err := dmi.Run(); err != nil {
+	}
 
 	byNameData, _ := dmi.SearchByName("Base Board Information")
-
-
-
 
 	usernames, _ := common.GetLoggedInUsers()
 
