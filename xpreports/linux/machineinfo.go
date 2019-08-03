@@ -1,15 +1,15 @@
 package linux
 
 import (
-	"os"
 	"strconv"
 
+	"github.com/airbnb/gosal/xpreports/common"
 	"github.com/pkg/errors"
 )
 
 // EmulateMachineInfo copies its behavior from macOS, and provides struct data to Sal
 func EmulateMachineInfo() (*MachineInfo, error) {
-	win32OS, err := GetWin32OS()
+	win32OS, err := common.GetOS()
 	if err != nil {
 		return nil, errors.Wrap(err, "emulatemachineinfo: failed getting os data")
 	}
@@ -43,26 +43,23 @@ type HardwareInfo struct {
 
 // GetHardwareInfo creates the necessary structure sal expects
 func GetHardwareInfo() (*HardwareInfo, error) {
-	/*
-		computerSystem, err := GetWin32ComputerSystem()
-		if err != nil {
-			return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting system data")
-		}
-	*/
-	/*
-		os, err := GetWin32OS()
-		if err != nil {
-			return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting os data")
-		}
-	*/
-	/*
-		cpu, err := GetWin32Processor()
-		if err != nil {
-			return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting processor data")
-		}
-	*/
+	computerSystem, err := GetLinuxComputerSystem()
+	if err != nil {
+		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting system data")
+	}
+
+	memory, err := common.GetOS()
+	if err != nil {
+		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting os data")
+	}
+
+	cpu, err := common.GetProcessor()
+	if err != nil {
+		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting processor data")
+	}
+
 	// Convert memory from kb to correct size
-	convertedMemory := float64(os.TotalVisibleMemorySize)
+	convertedMemory := float64(memory.TotalVisibleMemorySize)
 	unitCount := 0
 	strMemory := ""
 

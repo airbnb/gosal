@@ -15,7 +15,7 @@ func GetMacOSComputerSystem() (MacOSComputerSystem, error) {
 			// return ret[1], nil
 		}
 	}
-	//	return "", errors.New("can't generate machine ID")
+	// usernames, _ := common.GetLoggedInUsers()
 
 	compSys := MacOSComputerSystem{
 		UserName:     "gavin",
