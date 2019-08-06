@@ -12,7 +12,7 @@ func GetLinuxComputerSystem() (LinuxComputerSystem, error) {
 	if err := dmi.Run(); err != nil {
 	}
 
-	byNameData, _ := dmi.SearchByName("Base Board Information")
+	byNameData, _ := dmi.SearchByName("System Information")
 
 	usernames, _ := common.GetLoggedInUsers()
 
