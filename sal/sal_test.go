@@ -3,7 +3,6 @@ package sal
 import (
 	"net/http"
 	"net/http/httptest"
-	"net/url"
 	"testing"
 
 	"github.com/airbnb/gosal/config"
@@ -12,10 +11,7 @@ import (
 func TestCheckin(t *testing.T) {
 	// test values
 	serial := "foo"
-	values := url.Values{
-		"serial":      []string{serial},
-		"sal_version": []string{"bar"},
-	}
+	values := []byte(`{"serial":"MACSERIAL"}`)
 
 	// create a fake API endpoint served by the test server
 	checkin := func(w http.ResponseWriter, r *http.Request) {
