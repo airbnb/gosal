@@ -29,5 +29,5 @@ func GetWin32Processor() (Win32Processor, error) {
 // Win32Processor data structure
 type Win32Processor struct {
 	CPUType  string `json:"Name"`
-	CPUSpeed string `json:"MaxClockSpeed"`
+	CPUSpeed int    `json:"MaxClockSpeed"`
 }

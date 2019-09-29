@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	"github.com/airbnb/gosal/config"
-	"github.com/bdemetris/gosal/xpreports/windows"
+	"github.com/airbnb/gosal/xpreports/windows"
 	"github.com/pkg/errors"
 )
 
@@ -31,6 +31,11 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting processor data")
 	}
 
+	disk, err := windows.GetCDrive()
+	if err != nil {
+		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting information for c drive")
+	}
+
 	// Convert memory from kb to correct size
 	convertedMemory := float64(os.TotalVisibleMemorySize)
 	unitCount := 0
@@ -54,11 +59,19 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 
 	m := &Machine{
 		ExtraData: &machineExtraData{
-			SerialNumber:    bios.SerialNumber,
-			MachineModel:    computerSystem.Model,
-			CPUType:         cpu.CPUType,
-			Memory:          strMemory,
-			OperatingSystem: os.Caption,
+			SerialNumber:         bios.SerialNumber,
+			HostName:             bios.PSComputerName,
+			ConsoleUser:          computerSystem.UserName,
+			OSFamily:             "Windows",
+			OperatingSystem:      os.Caption,
+			HDSpace:              disk.FreeSpace,
+			HDTotal:              disk.Size,
+			MachineModel:         computerSystem.Model,
+			MachineModelFriendly: "N/A",
+			CPUType:              cpu.CPUType,
+			CPUSpeed:             cpu.CPUSpeed,
+			Memory:               strMemory,
+			MemoryKB:             os.TotalVisibleMemorySize,
 		}, Facts: &machineFacts{
 			CheckinModuleVersion: "1",
 		},

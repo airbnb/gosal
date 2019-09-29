@@ -47,7 +47,7 @@ type machineExtraData struct {
 	MachineModel         string  `json:"machine_model"`
 	MachineModelFriendly string  `json:"machine_model_friendly"`
 	CPUType              string  `json:"cpu_type"`
-	CPUSpeed             string  `json:"cpu_speed"`
+	CPUSpeed             int     `json:"cpu_speed"`
 	Memory               string  `json:"memory"`
 	MemoryKB             int     `json:"memory_kb"`
 }
