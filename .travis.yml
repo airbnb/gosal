@@ -1,7 +1,13 @@
 language: go
 
 go:
-  - 1.9.x
-  - 1.11.x
+  - 1.12.x
 
-script: make deps && make test && make lint
+env: GO111MODULE=on GOFLAGS='-mod vendor'
+
+before_script:
+  - go install github.com/golangci/golangci-lint/cmd/golangci-lint
+
+script:
+  - golangci-lint run
+  - go test -cover -race -v ./...

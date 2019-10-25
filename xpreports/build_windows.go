@@ -58,7 +58,7 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 	}
 
 	m := &Machine{
-		ExtraData: &machineExtraData{
+		ExtraData: &MachineExtraData{
 			SerialNumber:         bios.SerialNumber,
 			HostName:             bios.PSComputerName,
 			ConsoleUser:          computerSystem.UserName,
@@ -72,7 +72,7 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 			CPUSpeed:             cpu.CPUSpeed,
 			Memory:               strMemory,
 			MemoryKB:             os.TotalVisibleMemorySize,
-		}, Facts: &machineFacts{
+		}, Facts: &MachineFacts{
 			CheckinModuleVersion: "1",
 		},
 	}
@@ -82,10 +82,10 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 
 func buildSalReport(conf *config.Config) (*Sal, error) {
 	s := &Sal{
-		ExtraData: &salExtraData{
+		ExtraData: &SalExtraData{
 			Key:        conf.Key,
 			SalVersion: "1",
-		}, Facts: &salFacts{
+		}, Facts: &SalFacts{
 			CheckinModuleVersion: "1",
 		},
 	}

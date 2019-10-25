@@ -62,10 +62,8 @@ help:
 	$(info $(HELP_TEXT))
 
 deps:
-	go get -u github.com/golang/dep/...
-	go get -u github.com/golang/lint/golint
-	go mod download
-	go mod verify
+	GO111MODULE=on go mod download
+	GO111MODULE=on go mod verify
 
 clean:
 	rm -rf build/

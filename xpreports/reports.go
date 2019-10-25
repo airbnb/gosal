@@ -12,30 +12,34 @@ type Report struct {
 
 // Machine blah
 type Machine struct {
-	Facts     *machineFacts     `json:"facts"`
-	ExtraData *machineExtraData `json:"extra_data"`
+	Facts     *MachineFacts     `json:"facts"`
+	ExtraData *MachineExtraData `json:"extra_data"`
 }
 
 // Sal blah
 type Sal struct {
-	ExtraData *salExtraData `json:"extra_data"`
-	Facts     *salFacts     `json:"facts"`
+	ExtraData *SalExtraData `json:"extra_data"`
+	Facts     *SalFacts     `json:"facts"`
 }
 
-type salExtraData struct {
+// SalExtraData blah
+type SalExtraData struct {
 	Key        string `json:"key"`
 	SalVersion string `json:"sal_version"`
 }
 
-type salFacts struct {
+// SalFacts blah
+type SalFacts struct {
 	CheckinModuleVersion string `json:"checkin_module_version"`
 }
 
-type machineFacts struct {
+// MachineFacts blah
+type MachineFacts struct {
 	CheckinModuleVersion string `json:"checkin_module_version"`
 }
 
-type machineExtraData struct {
+// MachineExtraData blah
+type MachineExtraData struct {
 	SerialNumber         string  `json:"serial"`
 	HostName             string  `json:"hostname"`
 	ConsoleUser          string  `json:"console_user"`
