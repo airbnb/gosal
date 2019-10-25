@@ -1,12 +1,12 @@
 language: go
+dist: xenial
 
 go:
-  - "1.12"
+  - 1.12.x
 
 env: GO111MODULE=on GOFLAGS='-mod vendor'
 
 before_script:
-  - export GO=/home/travis/.gimme/versions/go1.12.linux.amd64/bin/go
   - go install github.com/golangci/golangci-lint/cmd/golangci-lint
 
 script:
