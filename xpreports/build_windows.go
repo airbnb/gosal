@@ -4,44 +4,91 @@ import (
 	"strconv"
 
 	"github.com/airbnb/gosal/config"
-	"github.com/airbnb/gosal/version"
 	"github.com/airbnb/gosal/xpreports/windows"
 	"github.com/pkg/errors"
-	uuid "github.com/satori/go.uuid"
 )
 
-// buildReport creates a report using windows APIs and paths.
-func buildReport(conf *config.Config) (*Report, error) {
-	win32Bios, err := windows.GetWin32Bios()
+// buildReport creates the necessary struct for Machine
+func buildMachineReport(conf *config.Config) (*Machine, error) {
+
+	bios, err := windows.GetWin32Bios()
 	if err != nil {
-		return nil, errors.Wrap(err, "get win32Bios")
+		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting bios data")
 	}
 
-	CDrive, err := windows.GetCDrive()
+	computerSystem, err := windows.GetWin32ComputerSystem()
 	if err != nil {
-		return nil, errors.Wrap(err, "reports: getting win32 disk")
+		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting system data")
 	}
 
-	u1 := uuid.NewV4().String()
-
-	encodedCompressedPlist, err := windows.BuildBase64bz2Report(conf)
+	os, err := windows.GetWin32OS()
 	if err != nil {
-		return nil, errors.Wrap(err, "reports: getting plist")
+		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting os data")
 	}
 
-	// Get version information
-	v := version.Version()
-
-	report := &Report{
-		Serial:          win32Bios.SerialNumber,
-		Key:             conf.Key,
-		Name:            win32Bios.PSComputerName,
-		DiskSize:        strconv.Itoa(CDrive.Size),
-		SalVersion:      v.Version,
-		RunUUID:         u1,
-		Base64bz2Report: encodedCompressedPlist,
+	cpu, err := windows.GetWin32Processor()
+	if err != nil {
+		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting processor data")
 	}
 
-	// fmt.Printf("%+v\n", report)
-	return report, nil
+	disk, err := windows.GetCDrive()
+	if err != nil {
+		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting information for c drive")
+	}
+
+	// Convert memory from kb to correct size
+	convertedMemory := float64(os.TotalVisibleMemorySize)
+	unitCount := 0
+	strMemory := ""
+
+	for convertedMemory >= 1024 {
+		convertedMemory = convertedMemory / 1024
+		unitCount++
+	}
+
+	switch unitCount {
+	case 0:
+		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " KB"
+	case 1:
+		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " MB"
+	case 2:
+		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " GB"
+	case 3:
+		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " TB"
+	}
+
+	m := &Machine{
+		ExtraData: &MachineExtraData{
+			SerialNumber:         bios.SerialNumber,
+			HostName:             bios.PSComputerName,
+			ConsoleUser:          computerSystem.UserName,
+			OSFamily:             "Windows",
+			OperatingSystem:      os.Caption,
+			HDSpace:              disk.FreeSpace,
+			HDTotal:              disk.Size,
+			MachineModel:         computerSystem.Model,
+			MachineModelFriendly: "N/A",
+			CPUType:              cpu.CPUType,
+			CPUSpeed:             cpu.CPUSpeed,
+			Memory:               strMemory,
+			MemoryKB:             os.TotalVisibleMemorySize,
+		}, Facts: &MachineFacts{
+			CheckinModuleVersion: "1",
+		},
+	}
+
+	return m, nil
+}
+
+func buildSalReport(conf *config.Config) (*Sal, error) {
+	s := &Sal{
+		ExtraData: &SalExtraData{
+			Key:        conf.Key,
+			SalVersion: "1",
+		}, Facts: &SalFacts{
+			CheckinModuleVersion: "1",
+		},
+	}
+
+	return s, nil
 }

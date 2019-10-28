@@ -2,13 +2,14 @@
 package sal
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net"
 	"net/http"
 	"net/url"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/airbnb/gosal/config"
@@ -42,11 +43,16 @@ func NewClient(conf *config.Config) (*Client, error) {
 const checkinPath = "/checkin/"
 
 // Checkin is our POST request
-func (c *Client) Checkin(values url.Values) error {
+func (c *Client) Checkin(values *Data) error {
 	checkinURL := c.ServerURL
 	checkinURL.Path = checkinPath
+
+	j, err := json.Marshal(values)
+	if err != nil {
+		fmt.Println(err)
+	}
 	// Create a new POST request with the urlencoded checkin values
-	req, err := http.NewRequest("POST", checkinURL.String(), strings.NewReader(values.Encode()))
+	req, err := http.NewRequest("POST", checkinURL.String(), bytes.NewBuffer(j))
 	if err != nil {
 		return fmt.Errorf("failed to create request: %s", err)
 	}
@@ -55,7 +61,7 @@ func (c *Client) Checkin(values url.Values) error {
 	req.SetBasicAuth(c.User, c.Password)
 
 	// We're sending URLEncoded data in the body, so tell the server what to expect
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Content-Type", "application/json")
 
 	// Configure new http.client with timeouts
 	httpclient := http.Client{
@@ -96,14 +102,16 @@ func SendCheckin(conf *config.Config) error {
 		return errors.Wrap(err, "build report")
 	}
 
-	err = client.Checkin(url.Values{
-		"serial":          {report.Serial},
-		"key":             {report.Key},
-		"name":            {report.Name},
-		"disk_size":       {report.DiskSize},
-		"sal_version":     {report.SalVersion},
-		"run_uuid":        {report.RunUUID},
-		"base64bz2report": {report.Base64bz2Report},
+	err = client.Checkin(&Data{
+		Machine: report.Machine,
+		Sal:     report.Sal,
 	})
+
 	return errors.Wrap(err, "checkin")
+}
+
+// Data is the collective POST structure
+type Data struct {
+	Machine *xpreports.Machine
+	Sal     *xpreports.Sal
 }

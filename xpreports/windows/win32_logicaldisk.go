@@ -43,8 +43,8 @@ func GetCDrive() (Win32LogicalDisk, error) {
 	for _, element := range disks {
 		if element.Name == "C:" {
 			c.Name = element.Name
-			c.Size = (element.Size / 1024)
-			c.FreeSpace = (element.FreeSpace / 1024)
+			c.Size = (element.Size)
+			c.FreeSpace = (element.FreeSpace)
 		}
 	}
 

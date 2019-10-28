@@ -3,18 +3,32 @@ package sal
 import (
 	"net/http"
 	"net/http/httptest"
-	"net/url"
 	"testing"
 
 	"github.com/airbnb/gosal/config"
+	"github.com/airbnb/gosal/xpreports"
 )
 
 func TestCheckin(t *testing.T) {
 	// test values
-	serial := "foo"
-	values := url.Values{
-		"serial":      []string{serial},
-		"sal_version": []string{"bar"},
+	serial := "serial"
+	values := Data{
+		Machine: &xpreports.Machine{
+			Facts: &xpreports.MachineFacts{
+				CheckinModuleVersion: "version",
+			},
+			ExtraData: &xpreports.MachineExtraData{
+				SerialNumber: serial,
+			},
+		},
+		Sal: &xpreports.Sal{
+			Facts: &xpreports.SalFacts{
+				CheckinModuleVersion: "version",
+			},
+			ExtraData: &xpreports.SalExtraData{
+				Key: "key",
+			},
+		},
 	}
 
 	// create a fake API endpoint served by the test server
@@ -23,7 +37,7 @@ func TestCheckin(t *testing.T) {
 			t.Errorf("have %s, want %s url path for checkin", have, want)
 		}
 		checkAuth(t, r)
-		if have, want := r.FormValue("serial"), serial; have != want {
+		if have, want := values.Machine.ExtraData.SerialNumber, serial; have != want {
 			t.Errorf("parsing serial from form: have %s, want %s", have, want)
 		}
 	}
@@ -31,7 +45,7 @@ func TestCheckin(t *testing.T) {
 	client, _, teardown := setupAPI(t, checkin)
 	defer teardown()
 
-	if err := client.Checkin(values); err != nil {
+	if err := client.Checkin(&values); err != nil {
 		t.Fatal(err)
 	}
 }
