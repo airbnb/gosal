@@ -1,6 +1,6 @@
 # Gosal (sal-client)
 
-*Gosal is an alpha project, and should not be considered for production use at this time.  There is no support, pull requests accepted :)*
+*Due to major changes in Sal4's checkin method, people who run Sal3 should checkout the Sal3 branch and build from there.*
 
 ## Overview
 
