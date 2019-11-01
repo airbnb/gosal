@@ -29,7 +29,7 @@ Gosal requires the configuration file to be passed in as an argument like so...
 `gosal.exe --config "C:\path\to\config.json"`
 
 
-# Building
+# Building Sal3
 
 To build the project after cloning:
 
@@ -39,6 +39,10 @@ make build
 ```
 
 New macOS and windows binaries will be added to the `build/` directory.
+
+# Building Sal4
+
+Sal4 (master) is switching to go.mod!
 
 ## Dependencies
 
