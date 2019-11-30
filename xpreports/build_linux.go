@@ -20,7 +20,7 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 		return nil, errors.Wrap(err, "reports: getting host information")
 	}
 
-	disk, err := common.GetDisk()
+	disk, err := linux.GetDisk()
 	if err != nil {
 		return nil, errors.Wrap(err, "reports: getting root volume")
 	}
@@ -28,28 +28,23 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 	serial, err := linux.GetlinuxSerial()
 	if err != nil {
 		return nil, errors.Wrap(err, "reports: getting serial")
+
 	}
 
-	encodedCompressedPlist, err := linux.BuildBase64bz2Report(conf)
+	cpu, err := linux.GetProcessor()
 	if err != nil {
-		return nil, errors.Wrap(err, "reports: getting plist")
+		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting processor data")
 	}
 
-	consoleUser, err := GetLoggedInUsers()
-	if err != nil {
-		return "", errors.Wrap(err, "Getting logged in user")
-	}
+	consoleUser, _ := linux.GetLoggedInUsers()
 
 	v, _ := mem.VirtualMemory()
 	h, _ := host.Info()
 
-	computerSystem, err := GetLinuxComputerSystem()
-	if err != nil {
-		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting system data")
-	}
+	computerSystem, _ := linux.GetLinuxComputerSystem()
 
 	// Convert memory from kb to correct size
-	convertedMemory := float64(memory.TotalVisibleMemorySize)
+	convertedMemory := float64(v.Total)
 	unitCount := 0
 	strMemory := ""
 
