@@ -10,7 +10,6 @@ import (
 
 // buildReport creates the necessary struct for Machine
 func buildMachineReport(conf *config.Config) (*Machine, error) {
-
 	bios, err := windows.GetWin32Bios()
 	if err != nil {
 		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting bios data")
