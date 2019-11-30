@@ -14,8 +14,8 @@ func GetDisk() (LogicalDisk, error) {
 	rootdisk, _ := disk.Usage("/")
 
 	d.Name = rootdisk.Path
-	d.Size = int(rootdisk.Total / 1024)
-	d.FreeSpace = int(rootdisk.Free / 1024)
+	d.Size = int(rootdisk.Total)
+	d.FreeSpace = int(rootdisk.Free)
 
 	return d, nil
 }
