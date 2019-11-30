@@ -71,19 +71,19 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 
 	m := &Machine{
 		ExtraData: &MachineExtraData{
-			SerialNumber:         serial,                    // done
-			HostName:             host.Hostname,             // done
-			ConsoleUser:          consoleUser[0],            // done
-			OSFamily:             "Linux",                   // done
-			OperatingSystem:      h.PlatformVersion,         // done
-			HDSpace:              disk.FreeSpace,            // done
-			HDTotal:              disk.Size,                 // done
-			MachineModel:         computerSystem.Model,      // done
-			MachineModelFriendly: "N/A",                     // done
-			CPUType:              cpu.CPUType,               // done
-			CPUSpeed:             cpu.CurrentProcessorSpeed, // done
-			Memory:               strMemory,                 // done
-			MemoryKB:             v.Total / 1024,            // done
+			SerialNumber:         serial,
+			HostName:             host.Hostname,
+			ConsoleUser:          consoleUser[0],
+			OSFamily:             "Linux",
+			OperatingSystem:      h.PlatformVersion,
+			HDSpace:              disk.FreeSpace,
+			HDTotal:              disk.Size,
+			MachineModel:         computerSystem.Model,
+			MachineModelFriendly: "N/A",
+			CPUType:              cpu.CPUType,
+			CPUSpeed:             cpu.CurrentProcessorSpeed,
+			Memory:               strMemory,
+			MemoryKB:             int(v.Total / 1024),
 		}, Facts: &MachineFacts{
 			CheckinModuleVersion: "1",
 		},
