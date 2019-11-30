@@ -3,13 +3,12 @@ package linux
 import (
 	"strconv"
 
-	"github.com/airbnb/gosal/xpreports/common"
 	"github.com/pkg/errors"
 )
 
 // EmulateMachineInfo copies its behavior from macOS, and provides struct data to Sal
 func EmulateMachineInfo() (*MachineInfo, error) {
-	win32OS, err := common.GetOS()
+	win32OS, err := GetOS()
 	if err != nil {
 		return nil, errors.Wrap(err, "emulatemachineinfo: failed getting os data")
 	}
@@ -48,12 +47,12 @@ func GetHardwareInfo() (*HardwareInfo, error) {
 		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting system data")
 	}
 
-	memory, err := common.GetOS()
+	memory, err := GetOS()
 	if err != nil {
 		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting os data")
 	}
 
-	cpu, err := common.GetProcessor()
+	cpu, err := GetProcessor()
 	if err != nil {
 		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting processor data")
 	}

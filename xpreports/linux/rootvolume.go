@@ -1,4 +1,4 @@
-package common
+package linux
 
 import "github.com/shirou/gopsutil/disk"
 
@@ -17,6 +17,5 @@ func GetDisk() (LogicalDisk, error) {
 	d.Size = int(rootdisk.Total / 1024)
 	d.FreeSpace = int(rootdisk.Free / 1024)
 
-	// print(strconv.Itoa(d.Size))
 	return d, nil
 }

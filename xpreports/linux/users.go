@@ -1,4 +1,4 @@
-package common
+package linux
 
 import (
 	"os/exec"

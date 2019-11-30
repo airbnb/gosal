@@ -1,4 +1,4 @@
-package common
+package linux
 
 import (
 	"github.com/shirou/gopsutil/host"
@@ -12,9 +12,8 @@ func GetOS() (OS, error) {
 	memory := OS{
 		Caption:                h.PlatformVersion,
 		TotalVirtualMemorySize: v.Total,
-		TotalVisibleMemorySize: v.Total / 1024, // Need to debug.
+		TotalVisibleMemorySize: v.Total / 1024,
 	}
-
 	return memory, nil
 }
 

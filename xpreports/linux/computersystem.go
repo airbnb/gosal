@@ -1,7 +1,6 @@
 package linux
 
 import (
-	"github.com/airbnb/gosal/xpreports/common"
 	"github.com/dselans/dmidecode"
 )
 
@@ -9,12 +8,11 @@ import (
 func GetLinuxComputerSystem() (LinuxComputerSystem, error) {
 	dmi := dmidecode.New()
 
-	if err := dmi.Run(); err != nil {
-	}
+	_ = dmi.Run()
 
 	byNameData, _ := dmi.SearchByName("System Information")
 
-	usernames, _ := common.GetLoggedInUsers()
+	usernames, _ := GetLoggedInUsers()
 
 	CompSys := LinuxComputerSystem{
 		UserName:     usernames[0],
@@ -25,7 +23,7 @@ func GetLinuxComputerSystem() (LinuxComputerSystem, error) {
 	return CompSys, nil
 }
 
-// Win32ComputerSystem structure
+// LinucComputerSystem
 type LinuxComputerSystem struct {
 	UserName     string
 	Manufacturer string
