@@ -51,12 +51,14 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 
 	switch unitCount {
 	case 0:
-		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " KB"
+		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " B"
 	case 1:
-		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " MB"
+		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " KB"
 	case 2:
-		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " GB"
+		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " MB"
 	case 3:
+		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " GB"
+	case 4:
 		strMemory = strconv.FormatFloat(convertedMemory, 'f', 0, 64) + " TB"
 	}
 
@@ -69,12 +71,13 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 			OperatingSystem:      host.PlatformVersion,
 			HDSpace:              disk.FreeSpace,
 			HDTotal:              disk.Size,
+			HDPercent:            disk.PercentageFree,
 			MachineModel:         computerSystem.Model,
 			MachineModelFriendly: "N/A",
 			CPUType:              cpu.CPUType,
 			CPUSpeed:             cpu.CurrentProcessorSpeed,
 			Memory:               strMemory,
-			MemoryKB:             int(v.Total / 1024),
+			MemoryKB:             int(v.Total),
 		}, Facts: &MachineFacts{
 			CheckinModuleVersion: "1",
 		},
