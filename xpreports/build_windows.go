@@ -10,7 +10,6 @@ import (
 
 // buildReport creates the necessary struct for Machine
 func buildMachineReport(conf *config.Config) (*Machine, error) {
-
 	bios, err := windows.GetWin32Bios()
 	if err != nil {
 		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting bios data")
@@ -38,8 +37,8 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 
 	// Convert memory from kb to correct size
 	convertedMemory := float64(os.TotalVisibleMemorySize)
-	unitCount := 0
-	strMemory := ""
+	var unitCount int
+	var strMemory string
 
 	for convertedMemory >= 1024 {
 		convertedMemory = convertedMemory / 1024

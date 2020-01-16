@@ -60,12 +60,16 @@ type MachineExtraData struct {
 // Build supports darwin, windows and linux and will use
 // the appropriate APIs for each system.
 func Build(conf *config.Config) (*Report, error) {
-
 	// buildReport is implented separately for each
 	// operating system.
 	machineReport, err := buildMachineReport(conf)
+	if err != nil {
+		return nil, err
+	}
 	salReport, err := buildSalReport(conf)
-
+	if err != nil {
+		return nil, err
+	}
 	report := &Report{
 		Machine: machineReport,
 		Sal:     salReport,

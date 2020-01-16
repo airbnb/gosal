@@ -66,7 +66,6 @@ func checkAuth(t *testing.T, r *http.Request) {
 	if have, want := password, testPassword; have != want {
 		t.Errorf("have %s, want %s", have, want)
 	}
-
 }
 
 // setupAPI creates a sal client and a temporary server used for testing.
