@@ -43,7 +43,7 @@ func buildReport(conf *config.Config) (*Report, error) {
 		Key:             conf.Key,
 		Name:            host.Hostname,
 		DiskSize:        strconv.Itoa(disk.Size),
-		SalVersion:      v.version,
+		SalVersion:      v.Version,
 		RunUUID:         u1,
 		Base64bz2Report: encodedCompressedPlist,
 	}
