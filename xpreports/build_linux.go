@@ -36,14 +36,14 @@ func buildReport(conf *config.Config) (*Report, error) {
 		return nil, errors.Wrap(err, "reports: getting plist")
 	}
 
-	v := version.Version()
+	v := Version.version()
 
 	report := &Report{
 		Serial:          serial,
 		Key:             conf.Key,
 		Name:            host.Hostname,
 		DiskSize:        strconv.Itoa(disk.Size),
-		SalVersion:      v.Version,
+		SalVersion:      v.version,
 		RunUUID:         u1,
 		Base64bz2Report: encodedCompressedPlist,
 	}
