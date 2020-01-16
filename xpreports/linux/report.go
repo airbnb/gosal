@@ -1,13 +1,13 @@
-package windows
+package linux
 
 import (
 	"bytes"
 	"encoding/base64"
-	"strings"
 	"time"
 
 	"github.com/airbnb/gosal/config"
 	"github.com/airbnb/gosal/xpreports/cm"
+	"github.com/airbnb/gosal/xpreports/common"
 	"github.com/dsnet/compress/bzip2"
 	"github.com/groob/plist"
 	"github.com/pkg/errors"
@@ -26,31 +26,31 @@ type basereport struct {
 func BuildBase64bz2Report(conf *config.Config) (string, error) {
 	var facts map[string]interface{}
 
-	if conf.Management != nil {
-		facts, _ = cm.GetFacts(conf.Management.Tool, conf.Management.Path, conf.Management.Command)
-	}
-
-	cDrive, err := GetCDrive()
-	if err != nil {
-		return "", errors.Wrap(err, "bz2: failed getting c: drive")
-	}
-
 	machineInfo, err := EmulateMachineInfo()
 	if err != nil {
 		return "", errors.Wrap(err, "bz2: failed getting machine info")
 	}
 
-	computerSystem, err := GetWin32ComputerSystem()
+	disk, err := common.GetDisk()
 	if err != nil {
-		return "", errors.Wrap(err, "bz2: failed getting computer system")
+		return "", errors.Wrap(err, "Getting root volume")
+	}
+
+	usernames, err := common.GetLoggedInUsers()
+	if err != nil {
+		return "", errors.Wrap(err, "Getting logged in users")
+	}
+
+	if conf.Management != nil {
+		facts, _ = cm.GetFacts(conf.Management.Tool, conf.Management.Path, conf.Management.Command)
 	}
 
 	report := basereport{
 		StartTime:          time.Now().Format("01-02-2006"),
-		AvailableDiskSpace: cDrive.FreeSpace,
+		AvailableDiskSpace: disk.FreeSpace,
 		MachineInfo:        machineInfo,
-		ConsoleUser:        strings.Split(computerSystem.UserName, "\\")[1],
-		OSFamily:           "Windows",
+		ConsoleUser:        usernames[0],
+		OSFamily:           "Linux",
 		Facter:             facts,
 	}
 

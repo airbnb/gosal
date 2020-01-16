@@ -35,7 +35,6 @@ type Win32LogicalDisk struct {
 
 // GetCDrive explicity looks for C Drive
 func GetCDrive() (Win32LogicalDisk, error) {
-
 	disks, _ := GetWin32LogicalDisk()
 
 	var c Win32LogicalDisk
