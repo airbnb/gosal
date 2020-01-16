@@ -134,8 +134,10 @@
     "github.com/groob/plist",
     "github.com/pkg/errors",
     "github.com/satori/go.uuid",
+    "github.com/shirou/gopsutil/cpu",
     "github.com/shirou/gopsutil/disk",
     "github.com/shirou/gopsutil/host",
+    "github.com/shirou/gopsutil/mem",
     "github.com/spf13/cobra",
   ]
   solver-name = "gps-cdcl"
