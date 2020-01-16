@@ -63,7 +63,7 @@ help:
 
 deps:
 	go get -u github.com/golang/dep/...
-	go get -u github.com/golang/lint/golint
+	go get -u golang.org/x/lint/golint
 	dep ensure -vendor-only -v
 
 clean:
