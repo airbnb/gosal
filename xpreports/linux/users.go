@@ -5,9 +5,12 @@ import (
 	"strings"
 )
 
-func GetLoggedInUsers() ([]string, error) {
+func ConsoleUser() ([]string, error) {
 	cmd := exec.Command("who", "-us")
-	users, _ := cmd.CombinedOutput()
+	users, err := cmd.CombinedOutput()
+	if err != nil {
+		return nil, err
+	}
 
 	cleaned := []string{}
 

@@ -9,10 +9,13 @@ type LogicalDisk struct {
 	PercentageFree float32
 }
 
-func GetDisk() (LogicalDisk, error) {
+func Disk() (LogicalDisk, error) {
 	var d LogicalDisk
 
-	rootdisk, _ := disk.Usage("/")
+	rootdisk, err := disk.Usage("/")
+	if err != nil {
+		return LogicalDisk{}, err
+	}
 
 	d.Name = rootdisk.Path
 	d.Size = int(rootdisk.Total)

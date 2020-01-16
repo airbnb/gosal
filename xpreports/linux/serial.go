@@ -5,8 +5,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-// GetlinuxSerial returns the system serial number
-func GetlinuxSerial() (string, error) {
+// Serial returns the system serial number
+func Serial() (string, error) {
 	dmi := dmidecode.New()
 
 	err := dmi.Run()

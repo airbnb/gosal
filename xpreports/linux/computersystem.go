@@ -4,15 +4,21 @@ import (
 	"github.com/dselans/dmidecode"
 )
 
-// GetLinuxComputerSystem
-func GetLinuxComputerSystem() (LinuxComputerSystem, error) {
+// GetComputerSystem
+func GetComputerSystem() (LinuxComputerSystem, error) {
 	dmi := dmidecode.New()
 
 	_ = dmi.Run()
 
-	byNameData, _ := dmi.SearchByName("System Information")
+	byNameData, err := dmi.SearchByName("System Information")
+	if err != nil {
+		return LinuxComputerSystem{}, err
+	}
 
-	usernames, _ := GetLoggedInUsers()
+	usernames, err := ConsoleUser()
+	if err != nil {
+		return LinuxComputerSystem{}, err
+	}
 
 	CompSys := LinuxComputerSystem{
 		UserName:     usernames[0],

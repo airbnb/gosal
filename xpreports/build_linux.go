@@ -17,15 +17,14 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 		return nil, errors.Wrap(err, "reports: getting host information")
 	}
 
-	disk, err := linux.GetDisk()
+	disk, err := linux.Disk()
 	if err != nil {
 		return nil, errors.Wrap(err, "reports: getting root volume")
 	}
 
-	serial, err := linux.GetlinuxSerial()
+	serial, err := linux.Serial()
 	if err != nil {
 		return nil, errors.Wrap(err, "reports: getting serial")
-
 	}
 
 	cpu, err := linux.GetProcessor()
@@ -33,16 +32,22 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 		return nil, errors.Wrap(err, "machineinfo/gethardware: failed getting processor data")
 	}
 
-	consoleUser, _ := linux.GetLoggedInUsers()
+	consoleUser, err := linux.ConsoleUser()
+	if err != nil {
+		return nil, errors.Wrap(err, "reports: getting console user")
+	}
 
 	v, _ := mem.VirtualMemory()
 
-	computerSystem, _ := linux.GetLinuxComputerSystem()
+	computerSystem, err := linux.GetComputerSystem()
+	if err != nil {
+		return nil, errors.Wrap(err, "reports: getting computerSystem")
+	}
 
 	// Convert memory from kb to correct size
 	convertedMemory := float64(v.Total)
-	unitCount := 0
-	strMemory := ""
+	var unitCount int
+	var strMemory string
 
 	for convertedMemory >= 1024 {
 		convertedMemory = convertedMemory / 1024
