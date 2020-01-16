@@ -35,7 +35,7 @@ func buildReport(conf *config.Config) (*Report, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "reports: getting plist")
 	}
-	
+
 	// Get version information
 	v := version.Version()
 
