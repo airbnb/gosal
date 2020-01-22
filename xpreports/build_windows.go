@@ -62,7 +62,7 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 			HostName:             bios.PSComputerName,
 			ConsoleUser:          computerSystem.UserName,
 			OSFamily:             "Windows",
-			OperatingSystem:      os.Caption,
+			OperatingSystem:      os.Caption + " " + os.Version,
 			HDSpace:              disk.FreeSpace,
 			HDTotal:              disk.Size,
 			MachineModel:         computerSystem.Model,
