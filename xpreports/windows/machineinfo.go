@@ -19,7 +19,7 @@ func EmulateMachineInfo() (*MachineInfo, error) {
 	}
 
 	report := MachineInfo{
-		OSVers:       win32OS.Caption,
+		OSVers:       win32OS.Caption + " - " + win32OS.Version,
 		HardwareInfo: hardwareInfo,
 	}
 
