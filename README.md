@@ -4,7 +4,7 @@ _Due to major changes in Sal4's checkin method, people who run Sal3 should check
 
 ## Overview
 
-Gosal is intended to be a multi platform client for sal.
+Gosal is intended to be a multi platform client for sal, Gosal does not provide a complete 1-2-1 mapping of reporting info compared to Sal for macOS PRs are welcome.
 
 ## Getting Started
 
@@ -13,7 +13,7 @@ Your configuration file should be `json` formatted as follows:
 ```json
 {
   "key": "your gigantic machine group key",
-  "url": "https://urltoyourserver.com/",
+  "url": "https://urltoyourserver.com",
   "management": {
     "tool": "puppet",
     "path": "C:\\Program Files\\Puppet Labs\\Puppet\\bin\\puppet.bat",
@@ -39,7 +39,7 @@ make deps
 make build
 ```
 
-New macOS and windows binaries will be added to the `build/` directory.
+Gosal OS specific binaries will be added to the `build/` directory.
 
 # Building Sal4
 

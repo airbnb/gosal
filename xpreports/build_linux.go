@@ -37,6 +37,7 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 		return nil, errors.Wrap(err, "reports: getting console user")
 	}
 
+	//Return the underling linux meminfo detail in bytes
 	v, _ := mem.VirtualMemory()
 
 	computerSystem, err := linux.GetComputerSystem()
@@ -44,7 +45,7 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 		return nil, errors.Wrap(err, "reports: getting computerSystem")
 	}
 
-	// Convert memory from kb to correct size
+	// Convert memory from bytes to a human readable size format
 	convertedMemory := float64(v.Total)
 	var unitCount int
 	var strMemory string
@@ -82,7 +83,7 @@ func buildMachineReport(conf *config.Config) (*Machine, error) {
 			CPUType:              cpu.CPUType,
 			CPUSpeed:             cpu.CurrentProcessorSpeed,
 			Memory:               strMemory,
-			MemoryKB:             int(v.Total),
+			MemoryKB:             int(v.Total) / 1024,
 		}, Facts: &MachineFacts{
 			CheckinModuleVersion: "1",
 		},
