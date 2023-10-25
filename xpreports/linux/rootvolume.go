@@ -1,6 +1,6 @@
 package linux
 
-import "github.com/shirou/gopsutil/disk"
+import "github.com/shirou/gopsutil/v3/disk"
 
 type LogicalDisk struct {
 	Name           string

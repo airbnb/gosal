@@ -6,8 +6,8 @@ import (
 	"github.com/airbnb/gosal/config"
 	"github.com/airbnb/gosal/xpreports/linux"
 	"github.com/pkg/errors"
-	"github.com/shirou/gopsutil/host"
-	"github.com/shirou/gopsutil/mem"
+	"github.com/shirou/gopsutil/v3/host"
+	"github.com/shirou/gopsutil/v3/mem"
 )
 
 // buildReport creates a report using linux APIs and paths.
