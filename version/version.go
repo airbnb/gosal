@@ -29,18 +29,18 @@ To use this package, a program would set the package variables at build time, us
 -ldflags go build flag.
 
 Example:
-    go build -ldflags "-X github.com/kolide/kit/version.version=1.0.0"
+
+	go build -ldflags "-X github.com/kolide/kit/version.version=1.0.0"
 
 Available values and defaults to use with ldflags:
 
-    version   = "unknown"
-    branch    = "unknown"
-    revision  = "unknown"
-    goVersion = "unknown"
-    buildDate = "unknown"
-    buildUser = "unknown"
-    appName   = "unknown"
-
+	version   = "unknown"
+	branch    = "unknown"
+	revision  = "unknown"
+	goVersion = "unknown"
+	buildDate = "unknown"
+	buildUser = "unknown"
+	appName   = "unknown"
 */
 package version
 
